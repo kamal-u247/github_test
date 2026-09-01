@@ -97,9 +97,11 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a>
-                    <a href="#demo" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Interactive Demos</a>
-                    <a href="#about" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Tech</a>
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a>
+                    <a href="index.html#features" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a>
+                    <a href="services.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services</a>
+                    <a href="about.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a>
+                    <a href="contact.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a>
 
                     <!-- Theme Toggle -->
                     <button @click="darkMode = !darkMode" 
@@ -138,9 +140,11 @@
         <div x-cloak x-show="mobileMenuOpen" 
              x-transition 
              class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-6 space-y-3">
-            <a @click="mobileMenuOpen = false" href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Features</a>
-            <a @click="mobileMenuOpen = false" href="#demo" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Interactive Demos</a>
-            <a @click="mobileMenuOpen = false" href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About Tech</a>
+            <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
+            <a @click="mobileMenuOpen = false" href="index.html#features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Features</a>
+            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Services</a>
+            <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About Us</a>
+            <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Us</a>
             <button @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition">
                 Get Started
             </button>
@@ -406,10 +410,11 @@
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Quick Navigation</h3>
                     <ul class="space-y-2.5 text-sm">
-                        <li><a href="#features" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a></li>
-                        <li><a href="#demo" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Interactive Demos</a></li>
-                        <li><a href="#about" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Technology</a></li>
-                        <li><button @click="modalOpen = true" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition text-left">Get Started Modal</button></li>
+                        <li><a href="index.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a></li>
+                        <li><a href="index.html#features" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a></li>
+                        <li><a href="services.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services & Pricing</a></li>
+                        <li><a href="about.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a></li>
                     </ul>
                 </div>
 
@@ -454,8 +459,8 @@
                 </div>
 
                 <div class="flex items-center space-x-6">
-                    <a href="#" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Privacy Policy</a>
-                    <a href="#" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Terms of Service</a>
+                    <a href="privacy.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Terms of Service</a>
                     <a href="#" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">MIT License</a>
                     
                     <!-- Back to Top Button -->

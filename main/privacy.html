@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ 
+    darkMode: false, 
+    mobileMenuOpen: false, 
+    modalOpen: false,
+    toast: { show: false, message: '' },
+    showToast(msg) {
+        this.toast.message = msg;
+        this.toast.show = true;
+        setTimeout(() => { this.toast.show = false; }, 3000);
+    }
+}" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Alpine + Tailwind Showcase</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
+
+    <!-- Toast Notification -->
+    <div x-cloak 
+         x-show="toast.show" 
+         x-transition:enter="transition ease-out duration-300 transform" 
+         x-transition:enter-start="opacity-0 translate-y-2" 
+         x-transition:enter-end="opacity-100 translate-y-0" 
+         x-transition:leave="transition ease-in duration-200 transform" 
+         x-transition:leave-start="opacity-100 translate-y-0" 
+         x-transition:leave-end="opacity-0 translate-y-2" 
+         class="fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 text-sm font-medium">
+        <svg class="w-5 h-5 text-emerald-400 dark:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span x-text="toast.message"></span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-emerald-500/20">
+                        ⚡
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                        Alpine<span class="text-emerald-500">+</span>Tailwind
+                    </span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a>
+                    <a href="index.html#features" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a>
+                    <a href="services.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services</a>
+                    <a href="about.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a>
+                    <a href="contact.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a>
+
+                    <!-- Theme Toggle -->
+                    <button @click="darkMode = !darkMode" 
+                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition focus:outline-none"
+                            title="Toggle Theme">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg x-cloak x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+
+                    <button @click="modalOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-sm shadow-emerald-600/30">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center space-x-2 md:hidden">
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        <span x-show="!darkMode">🌙</span>
+                        <span x-cloak x-show="darkMode">☀️</span>
+                    </button>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path x-cloak x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div x-cloak x-show="mobileMenuOpen" 
+             x-transition 
+             class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-6 space-y-3">
+            <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
+            <a @click="mobileMenuOpen = false" href="index.html#features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Features</a>
+            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Services</a>
+            <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About Us</a>
+            <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Us</a>
+            <button @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition">
+                Get Started
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="py-12 bg-white dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Legal Document</span>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Privacy Policy</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Last updated: September 1, 2026</p>
+            </div>
+        </section>
+
+        <!-- Document Body -->
+        <section class="py-16">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-8 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                    
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">1. Information We Collect</h2>
+                        <p class="mb-3">
+                            When you interact with our application, we may collect information that you voluntarily provide to us (e.g. name, email address via contact forms or newsletter subscriptions).
+                        </p>
+                        <ul class="list-disc pl-5 space-y-1 text-xs text-slate-500 dark:text-slate-400">
+                            <li><strong>Account & Contact Data:</strong> Name, email address, message contents.</li>
+                            <li><strong>Usage Data:</strong> Anonymized interaction metrics, theme preferences (stored in browser local storage).</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">2. How We Use Information</h2>
+                        <p>
+                            We use the collected information strictly for providing, maintaining, and improving our web tools, responding to support inquiries, and delivering newsletter updates if subscribed.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">3. Cookies & Storage</h2>
+                        <p>
+                            This showcase application uses standard HTML5 LocalStorage to remember user settings like Dark Mode (`darkMode`). We do not use intrusive tracking cookies or sell user data to third parties.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">4. Your Privacy Rights (GDPR & CCPA)</h2>
+                        <p class="mb-3">
+                            You have the right to request access to your personal data, request correction or deletion, or opt out of any communications at any time.
+                        </p>
+                        <a href="contact.html" class="inline-flex items-center space-x-1 font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+                            <span>Contact our Data Protection Officer</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">5. Contact Us</h2>
+                        <p>
+                            If you have questions regarding this Privacy Policy, please reach out to <a href="mailto:privacy@example.com" class="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">privacy@alpine-tailwind.dev</a> or visit our <a href="contact.html" class="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">Contact Page</a>.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Component -->
+    <div x-cloak 
+         x-show="modalOpen" 
+         class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+        <div x-show="modalOpen" @click="modalOpen = false" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div x-show="modalOpen" class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 z-10">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Privacy Information</h3>
+                <button @click="modalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">✕</button>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">Your data privacy and security are our highest priority.</p>
+            <button @click="modalOpen = false" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium">Close</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                <p>© 2026 Alpine+Tailwind Showcase. All rights reserved.</p>
+                <div class="flex items-center space-x-6">
+                    <a href="privacy.html" class="font-semibold text-emerald-600 dark:text-emerald-400">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-emerald-500 transition">Terms of Service</a>
+                    <a href="index.html" class="hover:text-emerald-500 transition">Home</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

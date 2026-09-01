@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ 
+    darkMode: false, 
+    mobileMenuOpen: false, 
+    modalOpen: false,
+    activeFaq: 1,
+    toast: { show: false, message: '' },
+    showToast(msg) {
+        this.toast.message = msg;
+        this.toast.show = true;
+        setTimeout(() => { this.toast.show = false; }, 3000);
+    }
+}" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Alpine + Tailwind Showcase</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
+
+    <!-- Toast Notification -->
+    <div x-cloak 
+         x-show="toast.show" 
+         x-transition:enter="transition ease-out duration-300 transform" 
+         x-transition:enter-start="opacity-0 translate-y-2" 
+         x-transition:enter-end="opacity-100 translate-y-0" 
+         x-transition:leave="transition ease-in duration-200 transform" 
+         x-transition:leave-start="opacity-100 translate-y-0" 
+         x-transition:leave-end="opacity-0 translate-y-2" 
+         class="fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 text-sm font-medium">
+        <svg class="w-5 h-5 text-emerald-400 dark:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span x-text="toast.message"></span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-emerald-500/20">
+                        ⚡
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                        Alpine<span class="text-emerald-500">+</span>Tailwind
+                    </span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a>
+                    <a href="index.html#features" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a>
+                    <a href="services.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services</a>
+                    <a href="about.html" class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 transition">About Us</a>
+                    <a href="contact.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a>
+
+                    <!-- Theme Toggle -->
+                    <button @click="darkMode = !darkMode" 
+                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition focus:outline-none"
+                            title="Toggle Theme">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg x-cloak x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+
+                    <button @click="modalOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-sm shadow-emerald-600/30">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center space-x-2 md:hidden">
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        <span x-show="!darkMode">🌙</span>
+                        <span x-cloak x-show="darkMode">☀️</span>
+                    </button>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path x-cloak x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div x-cloak x-show="mobileMenuOpen" 
+             x-transition 
+             class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-6 space-y-3">
+            <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
+            <a @click="mobileMenuOpen = false" href="index.html#features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Features</a>
+            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Services</a>
+            <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-emerald-600 dark:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800">About Us</a>
+            <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Us</a>
+            <button @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition">
+                Get Started
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden py-16 lg:py-24 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-slate-800/40 dark:to-transparent border-b border-slate-200/60 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold tracking-wide uppercase mb-4">
+                    <span>💡 Our Mission & Values</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-3xl mx-auto leading-tight">
+                    Empowering Developers with <span class="text-emerald-500">Elegant Simplicity</span>
+                </h1>
+                <p class="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    We believe web development shouldn't require complex build steps just to create interactive, beautiful components. Explore our journey, team, and technological core.
+                </p>
+            </div>
+        </section>
+
+        <!-- Core Mission & Vision Cards -->
+        <section class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            🎯
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Our Mission</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            To eliminate build step friction by combining Alpine.js lightweight reactivity with Tailwind CSS utility styling directly in HTML markup.
+                        </p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-900/50 text-sky-600 dark:text-sky-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            🔭
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Our Vision</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            A web where prototype-to-production speed is instant, accessible, and enjoyable for creators of all experience levels.
+                        </p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            💎
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Core Values</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Simplicity over complexity, maintainable clean code, performance optimization, and community-first open source support.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Milestones / Timeline -->
+        <section class="py-16 bg-white dark:bg-slate-800/40 border-y border-slate-200 dark:border-slate-800">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Our Journey & Milestones</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">How we evolved into a modern lightweight showcase.</p>
+                </div>
+
+                <div class="relative border-l-2 border-emerald-500/30 ml-4 md:ml-32 space-y-10">
+                    <!-- Milestone 1 -->
+                    <div class="relative pl-8">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-1">
+                            <span class="font-bold text-lg text-slate-900 dark:text-white">Project Inception</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold w-fit mt-1 sm:mt-0">2023</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Started as a lightweight alternative to heavy client-side JavaScript frameworks.
+                        </p>
+                    </div>
+
+                    <!-- Milestone 2 -->
+                    <div class="relative pl-8">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-1">
+                            <span class="font-bold text-lg text-slate-900 dark:text-white">Alpine v3 & Tailwind Integration</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold w-fit mt-1 sm:mt-0">2024</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Standardized dark mode reactivity, custom colors, modal states, and reusable UI components.
+                        </p>
+                    </div>
+
+                    <!-- Milestone 3 -->
+                    <div class="relative pl-8">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-1">
+                            <span class="font-bold text-lg text-slate-900 dark:text-white">Community Growth</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold w-fit mt-1 sm:mt-0">2025</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Empowered thousands of developers with high-speed interactive template patterns and zero setup friction.
+                        </p>
+                    </div>
+
+                    <!-- Milestone 4 -->
+                    <div class="relative pl-8">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-1">
+                            <span class="font-bold text-lg text-slate-900 dark:text-white">Next-Gen Multi-Page Experience</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold w-fit mt-1 sm:mt-0">2026</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Expanded into a complete suite of multi-page layouts including Contact, Services, Legal, and Interactive Demos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Showcase Section -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Meet Our Core Team</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">Passionate developers and designers building the web.</p>
+                </div>
+
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Member 1 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center hover:shadow-lg transition group">
+                        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-emerald-400 to-teal-600 flex items-center justify-center text-3xl font-extrabold text-white mb-4 shadow-md group-hover:scale-105 transition">
+                            JS
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Jane Smith</h3>
+                        <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold mb-2">Lead Frontend Architect</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Specializes in lightweight UI performance and declarative HTML reactivity.</p>
+                    </div>
+
+                    <!-- Member 2 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center hover:shadow-lg transition group">
+                        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-sky-400 to-indigo-600 flex items-center justify-center text-3xl font-extrabold text-white mb-4 shadow-md group-hover:scale-105 transition">
+                            AD
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Alex Doe</h3>
+                        <p class="text-xs text-sky-600 dark:text-sky-400 font-semibold mb-2">UI/UX Designer</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Crafts accessible color palettes, responsive typography, and Tailwind micro-interactions.</p>
+                    </div>
+
+                    <!-- Member 3 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center hover:shadow-lg transition group">
+                        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-purple-400 to-pink-600 flex items-center justify-center text-3xl font-extrabold text-white mb-4 shadow-md group-hover:scale-105 transition">
+                            MC
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Marcus Chen</h3>
+                        <p class="text-xs text-purple-600 dark:text-purple-400 font-semibold mb-2">Full Stack Engineer</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Expert in REST APIs, edge function deployments, and state hydration.</p>
+                    </div>
+
+                    <!-- Member 4 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center hover:shadow-lg transition group">
+                        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-amber-400 to-orange-600 flex items-center justify-center text-3xl font-extrabold text-white mb-4 shadow-md group-hover:scale-105 transition">
+                            EP
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Elena Patel</h3>
+                        <p class="text-xs text-amber-600 dark:text-amber-400 font-semibold mb-2">Community & DX Lead</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">Dedicated to documentation clarity, open source support, and developer outreach.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Component -->
+    <div x-cloak 
+         x-show="modalOpen" 
+         class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div x-show="modalOpen" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="modalOpen = false" 
+             class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+
+        <!-- Modal Dialog -->
+        <div x-show="modalOpen" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 z-10">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Get Started</h3>
+                <button @click="modalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
+                    ✕
+                </button>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                Ready to explore? You can customize this template with your own components and styles.
+            </p>
+            <div class="space-y-3">
+                <button @click="modalOpen = false; showToast('Welcome to About Us! 🚀')" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition">
+                    Confirm & Start
+                </button>
+                <button @click="modalOpen = false" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+                <!-- Column 1: Brand -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-emerald-500/20">
+                            ⚡
+                        </div>
+                        <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                            Alpine<span class="text-emerald-500">+</span>Tailwind
+                        </span>
+                    </div>
+                    <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400 max-w-sm">
+                        A modern, lightweight stack designed for build-free reactivity and elegant design. Empowering developers to build fast, reactive web applications.
+                    </p>
+                </div>
+
+                <!-- Column 2: Navigation -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Quick Navigation</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="index.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a></li>
+                        <li><a href="index.html#features" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a></li>
+                        <li><a href="services.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services & Pricing</a></li>
+                        <li><a href="about.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Resources -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Resources</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="https://alpinejs.dev" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Alpine.js Docs</a></li>
+                        <li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Tailwind Docs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Newsletter -->
+                <div x-data="{ email: '' }">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Stay Connected</h3>
+                    <form @submit.prevent="if(email) { showToast('Thanks for subscribing! 💌'); email = ''; }" class="space-y-2">
+                        <input type="email" x-model="email" placeholder="Enter your email" required class="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <button type="submit" class="w-full py-2 px-3 text-xs font-semibold rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 transition">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bottom Divider -->
+            <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                <p>© 2026 Alpine+Tailwind Showcase. All rights reserved.</p>
+                <div class="flex items-center space-x-6">
+                    <a href="privacy.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Terms of Service</a>
+                    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition">↑ Top</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

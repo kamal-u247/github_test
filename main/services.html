@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ 
+    darkMode: false, 
+    mobileMenuOpen: false, 
+    modalOpen: false,
+    billingCycle: 'monthly',
+    toast: { show: false, message: '' },
+    showToast(msg) {
+        this.toast.message = msg;
+        this.toast.show = true;
+        setTimeout(() => { this.toast.show = false; }, 3000);
+    }
+}" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services & Pricing - Alpine + Tailwind Showcase</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
+
+    <!-- Toast Notification -->
+    <div x-cloak 
+         x-show="toast.show" 
+         x-transition:enter="transition ease-out duration-300 transform" 
+         x-transition:enter-start="opacity-0 translate-y-2" 
+         x-transition:enter-end="opacity-100 translate-y-0" 
+         x-transition:leave="transition ease-in duration-200 transform" 
+         x-transition:leave-start="opacity-100 translate-y-0" 
+         x-transition:leave-end="opacity-0 translate-y-2" 
+         class="fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 text-sm font-medium">
+        <svg class="w-5 h-5 text-emerald-400 dark:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span x-text="toast.message"></span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-emerald-500/20">
+                        ⚡
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                        Alpine<span class="text-emerald-500">+</span>Tailwind
+                    </span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a>
+                    <a href="index.html#features" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a>
+                    <a href="services.html" class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 transition">Services</a>
+                    <a href="about.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a>
+                    <a href="contact.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a>
+
+                    <!-- Theme Toggle -->
+                    <button @click="darkMode = !darkMode" 
+                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition focus:outline-none"
+                            title="Toggle Theme">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg x-cloak x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+
+                    <button @click="modalOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-sm shadow-emerald-600/30">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center space-x-2 md:hidden">
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        <span x-show="!darkMode">🌙</span>
+                        <span x-cloak x-show="darkMode">☀️</span>
+                    </button>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path x-cloak x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div x-cloak x-show="mobileMenuOpen" 
+             x-transition 
+             class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-6 space-y-3">
+            <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
+            <a @click="mobileMenuOpen = false" href="index.html#features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Features</a>
+            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-emerald-600 dark:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800">Services</a>
+            <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About Us</a>
+            <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Us</a>
+            <button @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition">
+                Get Started
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden py-16 lg:py-24 bg-gradient-to-b from-emerald-50/50 to-transparent dark:from-slate-800/40 dark:to-transparent border-b border-slate-200/60 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold tracking-wide uppercase mb-4">
+                    <span>⚙️ Professional Solutions</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-3xl mx-auto leading-tight">
+                    Services Built for <span class="text-emerald-500">Speed & Elegance</span>
+                </h1>
+                <p class="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    From single-page micro applications to full design systems, we provide flexible frontend solutions powered by Alpine.js and Tailwind CSS.
+                </p>
+            </div>
+        </section>
+
+        <!-- Services Grid -->
+        <section class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">What We Deliver</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">High performance frontend development without build tool debt.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service 1 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            💻
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Custom Alpine App Architecture</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Build lightweight reactive single-page components and dashboards that hydrate instantly.
+                        </p>
+                        <a href="contact.html" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">Learn more →</a>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            🎨
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Tailwind UI Design Systems</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Custom design tokens, dark mode schemes, accessible contrast scales, and component libraries.
+                        </p>
+                        <a href="contact.html" class="text-xs font-semibold text-sky-600 dark:text-sky-400 hover:underline">Learn more →</a>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            🔌
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">REST & GraphQL Integration</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Seamlessly fetch, filter, and render backend endpoints in Alpine templates without framework overhead.
+                        </p>
+                        <a href="contact.html" class="text-xs font-semibold text-purple-600 dark:text-purple-400 hover:underline">Learn more →</a>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            ⚡
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Performance Audit & Speedup</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Migrate bloated heavy JS frameworks to clean HTML + Alpine to achieve 100 Lighthouse scores.
+                        </p>
+                        <a href="contact.html" class="text-xs font-semibold text-amber-600 dark:text-amber-400 hover:underline">Learn more →</a>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            📱
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Responsive Mobile Optimization</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            Ensure pixel-perfect responsiveness across mobile devices, tablets, desktop screens, and foldable displays.
+                        </p>
+                        <a href="contact.html" class="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline">Learn more →</a>
+                    </div>
+
+                    <!-- Service 6 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl font-bold mb-5">
+                            🛠️
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Technical Consulting & Audits</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                            1-on-1 code reviews, architectural advice, and developer training for lightweight web stacks.
+                        </p>
+                        <a href="contact.html" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Learn more →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section with Interactive Alpine Toggle -->
+        <section class="py-16 bg-white dark:bg-slate-800/40 border-y border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Simple, Transparent Pricing</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">Choose the plan that fits your project scope.</p>
+
+                    <!-- Billing Toggle -->
+                    <div class="mt-6 inline-flex items-center space-x-3 p-1.5 bg-slate-200/70 dark:bg-slate-900 rounded-xl">
+                        <button @click="billingCycle = 'monthly'" 
+                                :class="{ 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm': billingCycle === 'monthly', 'text-slate-600 dark:text-slate-400': billingCycle !== 'monthly' }"
+                                class="px-4 py-2 rounded-lg text-xs font-bold transition">
+                            Monthly Billing
+                        </button>
+                        <button @click="billingCycle = 'yearly'" 
+                                :class="{ 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm': billingCycle === 'yearly', 'text-slate-600 dark:text-slate-400': billingCycle !== 'yearly' }"
+                                class="px-4 py-2 rounded-lg text-xs font-bold transition flex items-center space-x-1.5">
+                            <span>Annual Billing</span>
+                            <span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-extrabold text-[10px]">SAVE 20%</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pricing Cards -->
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Starter Plan -->
+                    <div class="p-8 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Starter</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">Ideal for personal sites & micro projects</p>
+                            
+                            <div class="flex items-baseline mb-6">
+                                <span class="text-4xl font-extrabold text-slate-900 dark:text-white" x-text="billingCycle === 'yearly' ? '$15' : '$19'"></span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 ml-1">/ month</span>
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-slate-600 dark:text-slate-300 mb-8">
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Up to 3 page layouts</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Tailwind CSS styling</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Alpine.js form reactivity</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Dark Mode support</span></li>
+                            </ul>
+                        </div>
+                        <button @click="showToast('Starter plan selected! 🚀')" class="w-full py-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 font-semibold text-xs hover:bg-slate-300 dark:hover:bg-slate-600 transition">Get Started</button>
+                    </div>
+
+                    <!-- Pro Plan (Featured) -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border-2 border-emerald-500 shadow-xl flex flex-col justify-between relative">
+                        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-emerald-500 text-white font-extrabold text-[10px] tracking-wider uppercase shadow-md">
+                            Most Popular
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Professional</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">Great for small business & web apps</p>
+                            
+                            <div class="flex items-baseline mb-6">
+                                <span class="text-4xl font-extrabold text-emerald-600 dark:text-emerald-400" x-text="billingCycle === 'yearly' ? '$39' : '$49'"></span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 ml-1">/ month</span>
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-slate-600 dark:text-slate-300 mb-8">
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Unlimited page layouts</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Full interactive component suite</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>API endpoints integration</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>SEO & Performance optimization</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Priority email support</span></li>
+                            </ul>
+                        </div>
+                        <button @click="showToast('Pro plan selected! 🚀')" class="w-full py-3 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 transition shadow-md shadow-emerald-600/30">Select Pro Plan</button>
+                    </div>
+
+                    <!-- Enterprise Plan -->
+                    <div class="p-8 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Enterprise</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">For large teams & custom integrations</p>
+                            
+                            <div class="flex items-baseline mb-6">
+                                <span class="text-4xl font-extrabold text-slate-900 dark:text-white" x-text="billingCycle === 'yearly' ? '$79' : '$99'"></span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 ml-1">/ month</span>
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-slate-600 dark:text-slate-300 mb-8">
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Custom design system architecture</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>1-on-1 code reviews & team training</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Dedicated SLA & 24/7 Slack channel</span></li>
+                                <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span><span>Custom security audit report</span></li>
+                            </ul>
+                        </div>
+                        <a href="contact.html" class="w-full py-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-100 font-semibold text-xs text-center hover:bg-slate-300 dark:hover:bg-slate-600 transition block">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Loved by Web Developers</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">See what our clients say about build-free reactivity.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Review 1 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex text-amber-400 text-sm mb-3">★★★★★</div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 italic mb-6">"Switching to Alpine.js and Tailwind cut our frontend bundle size by 85%. Our users love the instant page responses!"</p>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">SK</div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 dark:text-white">Sarah Jenkins</h4>
+                                <p class="text-[11px] text-slate-500">CTO at TechPulse</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex text-amber-400 text-sm mb-3">★★★★★</div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 italic mb-6">"The combination of utility classes and inline Alpine directives makes prototyping landing pages ridiculously fast."</p>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-full bg-sky-500 text-white font-bold flex items-center justify-center text-xs">DR</div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 dark:text-white">David Rivera</h4>
+                                <p class="text-[11px] text-slate-500">Founder at LaunchPad</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex text-amber-400 text-sm mb-3">★★★★★</div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 italic mb-6">"Clear documentation, zero compilation errors, and complete dark mode support out of the box. Highly recommended!"</p>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-full bg-purple-500 text-white font-bold flex items-center justify-center text-xs">MA</div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 dark:text-white">Michael Adams</h4>
+                                <p class="text-[11px] text-slate-500">Senior Lead at CraftDev</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Component -->
+    <div x-cloak 
+         x-show="modalOpen" 
+         class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div x-show="modalOpen" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="modalOpen = false" 
+             class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+
+        <!-- Modal Dialog -->
+        <div x-show="modalOpen" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 z-10">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Get Started</h3>
+                <button @click="modalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
+                    ✕
+                </button>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                Choose a plan or request a custom solution today!
+            </p>
+            <div class="space-y-3">
+                <button @click="modalOpen = false; showToast('Ready to start your project! 🚀')" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition">
+                    Confirm & Start
+                </button>
+                <button @click="modalOpen = false" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+                <!-- Column 1: Brand -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-emerald-500/20">
+                            ⚡
+                        </div>
+                        <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                            Alpine<span class="text-emerald-500">+</span>Tailwind
+                        </span>
+                    </div>
+                    <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400 max-w-sm">
+                        A modern, lightweight stack designed for build-free reactivity and elegant design. Empowering developers to build fast, reactive web applications.
+                    </p>
+                </div>
+
+                <!-- Column 2: Navigation -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Quick Navigation</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="index.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a></li>
+                        <li><a href="index.html#features" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a></li>
+                        <li><a href="services.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services & Pricing</a></li>
+                        <li><a href="about.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Resources -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Resources</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="https://alpinejs.dev" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Alpine.js Docs</a></li>
+                        <li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Tailwind Docs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Newsletter -->
+                <div x-data="{ email: '' }">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Stay Connected</h3>
+                    <form @submit.prevent="if(email) { showToast('Thanks for subscribing! 💌'); email = ''; }" class="space-y-2">
+                        <input type="email" x-model="email" placeholder="Enter your email" required class="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <button type="submit" class="w-full py-2 px-3 text-xs font-semibold rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 transition">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bottom Divider -->
+            <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                <p>© 2026 Alpine+Tailwind Showcase. All rights reserved.</p>
+                <div class="flex items-center space-x-6">
+                    <a href="privacy.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Terms of Service</a>
+                    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition">↑ Top</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+
