@@ -1,44 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ 
-    darkMode: false, 
-    mobileMenuOpen: false, 
-    modalOpen: false, 
-    activeTab: 'counter',
-    // Counter state
-    count: 5,
-    // Todo state
-    todos: [
-        { text: 'Explore Alpine.js directive reactivity', completed: true },
-        { text: 'Style elements with Tailwind utility classes', completed: true },
-        { text: 'Build amazing fast web application', completed: false }
-    ],
-    newTodo: '',
-    addTodo() {
-        if (this.newTodo.trim() !== '') {
-            this.todos.push({ text: this.newTodo.trim(), completed: false });
-            this.newTodo = '';
-            this.showToast('Task added successfully!');
-        }
-    },
-    removeTodo(index) {
-        this.todos.splice(index, 1);
-        this.showToast('Task removed');
-    },
-    // Text transformer state
-    userText: 'Hello Alpine & Tailwind!',
-    // Toast notification state
+<html lang="en" x-data="{
+    darkMode: false,
+    mobileMenuOpen: false,
+    modalOpen: false,
+    reserveName: '',
     toast: { show: false, message: '' },
     showToast(msg) {
         this.toast.message = msg;
         this.toast.show = true;
         setTimeout(() => { this.toast.show = false; }, 3000);
-    }
+    },
+    
+    activeTab: 'rooms',
+    checkIn: '',
+    checkOut: '',
+    guests: 2,
+    checkAvailability() {
+        if (this.checkIn && this.checkOut) {
+            this.showToast('Searching availability for ' + this.guests + ' guest(s)... ✨');
+        } else {
+            this.showToast('Please select check-in and check-out dates.');
+        }
+    },
+
 }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Website</title>
-    <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+    <title>Aurelia Hotel &amp; Resort</title>
+    <meta name="description" content="A refined oceanfront retreat offering elegant rooms, world-class amenities, and warm, attentive hospitality. Discover your oceanfront escape at Aurelia Hotel &amp; Resort.">
+    <link rel="canonical" href="https://www.aurelia-hotel.com/index.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Aurelia Hotel & Resort">
+    <meta property="og:title" content="Aurelia Hotel &amp; Resort">
+    <meta property="og:description" content="A refined oceanfront retreat offering elegant rooms, world-class amenities, and warm, attentive hospitality. Discover your oceanfront escape at Aurelia Hotel &amp; Resort.">
+    <meta property="og:url" content="https://www.aurelia-hotel.com/index.html">
+    <meta property="og:image" content="https://www.aurelia-hotel.com/images/apple-touch-icon.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Aurelia Hotel &amp; Resort">
+    <meta name="twitter:description" content="A refined oceanfront retreat offering elegant rooms, world-class amenities, and warm, attentive hospitality. Discover your oceanfront escape at Aurelia Hotel &amp; Resort.">
+    <meta name="twitter:image" content="https://www.aurelia-hotel.com/images/apple-touch-icon.png">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+    <script type="application/ld+json">{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;Resort&quot;,&quot;name&quot;:&quot;Aurelia Hotel &amp; Resort&quot;,&quot;description&quot;:&quot;A refined oceanfront retreat offering elegant rooms, world-class amenities, and warm, attentive hospitality. Discover your oceanfront escape at Aurelia Hotel &amp; Resort.&quot;,&quot;url&quot;:&quot;https://www.aurelia-hotel.com/&quot;,&quot;telephone&quot;:&quot;+1-305-555-0134&quot;,&quot;email&quot;:&quot;reservations@aurelia-hotel.com&quot;,&quot;image&quot;:&quot;https://www.aurelia-hotel.com/images/apple-touch-icon.png&quot;,&quot;priceRange&quot;:&quot;$189-$899&quot;,&quot;starRating&quot;:{&quot;@type&quot;:&quot;Rating&quot;,&quot;ratingValue&quot;:&quot;4.9&quot;}}</script>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -48,86 +63,129 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#d4a017',
+                            600: '#b8860b',
+                            700: '#946908',
                         }
                     }
                 }
             }
         }
     </script>
-    <!-- Alpine.js CDN -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Alpine.js CDN (pinned) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
     <style>
         [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
 
+
     <!-- Toast Notification -->
-    <div x-cloak 
-         x-show="toast.show" 
-         x-transition:enter="transition ease-out duration-300 transform" 
-         x-transition:enter-start="opacity-0 translate-y-2" 
-         x-transition:enter-end="opacity-100 translate-y-0" 
-         x-transition:leave="transition ease-in duration-200 transform" 
-         x-transition:leave-start="opacity-100 translate-y-0" 
-         x-transition:leave-end="opacity-0 translate-y-2" 
-         class="fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 text-sm font-medium">
-        <svg class="w-5 h-5 text-emerald-400 dark:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div x-cloak
+         x-show="toast.show"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200 transform"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 translate-y-2"
+         class="fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 text-sm font-medium"
+         role="status"
+         aria-live="polite">
+        <svg class="w-5 h-5 text-amber-400 dark:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
         </svg>
         <span x-text="toast.message"></span>
     </div>
 
+    <!-- Utility Bar -->
+    <div class="hidden sm:block bg-slate-900 dark:bg-black text-slate-300 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between">
+            <div class="flex items-center gap-5">
+                <a href="tel:+13055550134" class="flex items-center gap-1.5 hover:text-amber-400 transition">
+                    <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>+1&nbsp;(305)&nbsp;555&#8209;0134</span>
+                </a>
+                <a href="mailto:reservations@aurelia-hotel.com" class="flex items-center gap-1.5 hover:text-amber-400 transition">
+                    <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/></svg>
+                    <span>reservations@aurelia-hotel.com</span>
+                </a>
+            </div>
+            <div class="flex items-center gap-3.5">
+                <span class="text-slate-500">Follow us</span>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-amber-400 transition" aria-label="Aurelia Hotel & Resort on Instagram">
+                    <!-- TODO: real social URL -->
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-amber-400 transition" aria-label="Aurelia Hotel & Resort on Facebook">
+                    <!-- TODO: real social URL -->
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <nav class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-[76px]">
                 <!-- Logo & Brand Name -->
-                <a href="#" class="flex items-center space-x-3 group">
-                    <img src="images/logo.jpg" alt="My First Website Logo" class="w-10 h-10 rounded-xl object-cover shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-200" />
-                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
-                        My First <span class="text-emerald-500">Website</span>
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="images/logo.svg" alt="Aurelia Hotel & Resort" width="40" height="40" class="w-10 h-10 group-hover:scale-105 transition-transform duration-200">
+                    <span class="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
+                        Aurelia <span class="text-amber-500">Hotel &amp; Resort</span>
                     </span>
                 </a>
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
+<<<<<<< HEAD
                     <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a>
                     <a href="features.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a>
                     <a href="services.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services</a>
                     <a href="about.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a>
                     <a href="contact.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a>
+=======
+                    <a href="index.html" class="text-sm font-medium transition text-amber-600 dark:text-amber-400 font-semibold">Home</a>
+                    <a href="rooms.html" class="text-sm font-medium transition text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400">Rooms</a>
+                    <a href="services.html" class="text-sm font-medium transition text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400">Amenities &amp; Rates</a>
+                    <a href="about.html" class="text-sm font-medium transition text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400">About Us</a>
+                    <a href="contact.html" class="text-sm font-medium transition text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400">Contact Us</a>
+>>>>>>> kamal02
 
                     <!-- Theme Toggle -->
-                    <button @click="darkMode = !darkMode" 
-                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition focus:outline-none"
-                            title="Toggle Theme">
-                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" @click="darkMode = !darkMode"
+                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition focus:outline-none focus:ring-2 focus:ring-amber-500"
+                            aria-label="Toggle dark mode"
+                            :aria-pressed="darkMode.toString()">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                         </svg>
-                        <svg x-cloak x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg x-cloak x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </button>
 
-                    <button @click="modalOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-sm shadow-emerald-600/30">
-                        Get Started
+                    <button type="button" @click="modalOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition shadow-sm shadow-amber-600/30">
+                        Book Now
                     </button>
                 </div>
 
                 <!-- Mobile Menu Button -->
                 <div class="flex items-center space-x-2 md:hidden">
-                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                        <span x-show="!darkMode">🌙</span>
-                        <span x-cloak x-show="darkMode">☀️</span>
+                    <button type="button" @click="darkMode = !darkMode" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300" aria-label="Toggle dark mode" :aria-pressed="darkMode.toString()">
+                        <span x-show="!darkMode" aria-hidden="true">🌙</span>
+                        <span x-cloak x-show="darkMode" aria-hidden="true">☀️</span>
                     </button>
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" @click="mobileMenuOpen = !mobileMenuOpen"
+                            class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            aria-label="Toggle navigation menu"
+                            :aria-expanded="mobileMenuOpen.toString()"
+                            aria-controls="mobile-menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                             <path x-cloak x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>
@@ -137,9 +195,10 @@
         </div>
 
         <!-- Mobile Drawer -->
-        <div x-cloak x-show="mobileMenuOpen" 
-             x-transition 
+        <div id="mobile-menu" x-cloak x-show="mobileMenuOpen"
+             x-transition
              class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-6 space-y-3">
+<<<<<<< HEAD
             <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
             <a @click="mobileMenuOpen = false" href="features.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Features</a>
             <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Services</a>
@@ -147,203 +206,310 @@
             <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Us</a>
             <button @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition">
                 Get Started
+=======
+            <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-amber-600 dark:text-amber-400">Home</a>
+            <a @click="mobileMenuOpen = false" href="rooms.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">Rooms</a>
+            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">Amenities &amp; Rates</a>
+            <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">About Us</a>
+            <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">Contact Us</a>
+            <button type="button" @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition">
+                Book Now
+>>>>>>> kamal02
             </button>
         </div>
     </nav>
 
+
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
-        <section class="relative overflow-hidden py-20 lg:py-28">
+        <section class="relative overflow-hidden py-24 lg:py-36">
+            <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=2000&q=80" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/60 to-slate-900/80"></div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold tracking-wide uppercase mb-6">
-                    <span>✨ Welcome to My First Website</span>
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-amber-100/95 dark:bg-amber-950/70 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-semibold tracking-wide uppercase mb-6">
+                    <span>✨ Welcome to Aurelia Hotel &amp; Resort</span>
                 </div>
                 <div class="flex justify-center mb-6">
-                    <img src="images/logo.jpg" alt="My First Website Logo" class="w-24 h-24 rounded-2xl shadow-xl shadow-emerald-500/20 border-2 border-emerald-500/30 object-cover hover:scale-105 transition-transform duration-300" />
+                    <img src="images/logo.svg" alt="Aurelia Hotel & Resort" width="96" height="96" class="w-24 h-24 hover:scale-105 transition-transform duration-300 drop-shadow-lg">
                 </div>
-                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-4xl mx-auto leading-tight">
-                    Welcome to <span class="text-emerald-500">My First Website</span>
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight drop-shadow-sm">
+                    Your Oceanfront <span class="text-amber-400">Escape Awaits</span>
                 </h1>
-                <p class="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                    Build lightweight, reactive, and visually stunning web interfaces directly in your HTML. Zero heavy build tools needed to get started.
+                <p class="mt-6 text-lg sm:text-xl text-slate-100 max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
+                    Indulge in refined comfort, panoramic ocean views, and effortless hospitality. Discover a stay designed around you.
                 </p>
                 <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button @click="modalOpen = true" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition shadow-lg shadow-emerald-600/30 flex items-center justify-center space-x-2">
-                        <span>Try Interactive Demo</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <button type="button" @click="modalOpen = true" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-white bg-amber-600 hover:bg-amber-700 transition shadow-lg shadow-amber-600/30 flex items-center justify-center space-x-2">
+                        <span>Reserve Your Stay</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </button>
+<<<<<<< HEAD
                     <a href="features.html" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition flex items-center justify-center">
                         Explore Features
+=======
+                    <a href="rooms.html" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-800 bg-white/95 hover:bg-white transition flex items-center justify-center">
+                        Explore Rooms
+>>>>>>> kamal02
                     </a>
                 </div>
             </div>
-
-            <!-- Background Glow -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-tr from-emerald-500/10 to-sky-500/10 blur-3xl pointer-events-none rounded-full"></div>
         </section>
 
-        <!-- Features Grid -->
+        <!-- Trust / Stats Strip -->
+        <section class="py-10 bg-white dark:bg-slate-800/50 border-y border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-500">4.9<span class="text-lg">★</span></div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">2,400+ Guest Reviews</p>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-500">120+</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Rooms &amp; Suites</p>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-500">18</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Years of Hospitality</p>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-500">24/7</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Concierge &amp; Room Service</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hotel Highlights Grid -->
         <section id="features" class="py-16 bg-white dark:bg-slate-800/50 border-y border-slate-200 dark:border-slate-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Why Choose This Stack?</h2>
-                    <p class="mt-2 text-slate-600 dark:text-slate-400">Minimal complexity, maximum productivity.</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Why Stay With Us?</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">Comfort, service, and setting — all in perfect balance.</p>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Feature 1 -->
+                    <!-- Highlight 1 -->
                     <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition hover:shadow-md">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl font-bold mb-4">
-                            🚀
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl font-bold mb-4">
+                            🌊
                         </div>
-                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Alpine.js Reactivity</h3>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Oceanfront Views</h3>
                         <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Declarative, reactive component behavior written directly in markup (`x-data`, `x-show`, `x-on`).
+                            Every room is positioned to capture sweeping views of the coastline and sunrise.
                         </p>
                     </div>
 
-                    <!-- Feature 2 -->
+                    <!-- Highlight 2 -->
                     <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition hover:shadow-md">
                         <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-900/50 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl font-bold mb-4">
-                            🎨
+                            🍽️
                         </div>
-                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Tailwind Utility Styling</h3>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Award-Winning Dining</h3>
                         <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Rapidly compose sleek, modern responsive layouts without leaving your HTML code.
+                            Savor locally sourced cuisine crafted by our in-house culinary team at three signature restaurants.
                         </p>
                     </div>
 
-                    <!-- Feature 3 -->
+                    <!-- Highlight 3 -->
                     <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition hover:shadow-md">
                         <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl font-bold mb-4">
-                            ⚡
+                            💆
                         </div>
-                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Zero Build Overhead</h3>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Full-Service Spa</h3>
                         <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Instant prototyping and lightweight deployment using clean CDN scripts.
+                            Unwind with signature treatments, a thermal pool circuit, and private cabana relaxation lounges.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Interactive Demos Section -->
-        <section id="demo" class="py-20">
+        <!-- Booking & Rooms Section -->
+        <section id="rooms" class="py-20">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-10">
-                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Live Interactive Demos</h2>
-                    <p class="mt-2 text-slate-600 dark:text-slate-400">See Alpine.js reactivity in action below.</p>
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Check Availability &amp; Browse Rooms</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">Find the perfect room for your stay, then explore our favorites below.</p>
                 </div>
 
                 <!-- Tab Controls -->
                 <div class="flex justify-center space-x-2 p-1.5 bg-slate-200/70 dark:bg-slate-800 rounded-xl mb-8">
-                    <button @click="activeTab = 'counter'" 
-                            :class="{ 'bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-sm': activeTab === 'counter', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeTab !== 'counter' }"
+                    <button type="button" @click="activeTab = 'rooms'"
+                            :class="{ 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm': activeTab === 'rooms', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeTab !== 'rooms' }"
                             class="px-5 py-2.5 rounded-lg text-sm font-semibold transition">
-                        Counter State
+                        Featured Rooms
                     </button>
-                    <button @click="activeTab = 'todos'" 
-                            :class="{ 'bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-sm': activeTab === 'todos', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeTab !== 'todos' }"
+                    <button type="button" @click="activeTab = 'availability'"
+                            :class="{ 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm': activeTab === 'availability', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeTab !== 'availability' }"
                             class="px-5 py-2.5 rounded-lg text-sm font-semibold transition">
-                        Task List
-                    </button>
-                    <button @click="activeTab = 'text'" 
-                            :class="{ 'bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-sm': activeTab === 'text', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeTab !== 'text' }"
-                            class="px-5 py-2.5 rounded-lg text-sm font-semibold transition">
-                        Live Text Binding
+                        Check Availability
                     </button>
                 </div>
 
                 <!-- Demo Card Box -->
                 <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
 
-                    <!-- Tab 1: Counter -->
-                    <div x-show="activeTab === 'counter'" class="text-center py-6 space-y-6">
-                        <span class="text-sm font-medium text-slate-500 uppercase tracking-wider">Reactive Counter</span>
-                        <div class="text-6xl font-black text-emerald-600 dark:text-emerald-400" x-text="count"></div>
-                        <div class="flex justify-center space-x-3">
-                            <button @click="count--" class="px-5 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-700 font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition">- Decrement</button>
-                            <button @click="count = 0" class="px-5 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-700 font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-600 transition">Reset</button>
-                            <button @click="count++" class="px-5 py-2.5 rounded-lg bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition">+ Increment</button>
-                        </div>
-                    </div>
-
-                    <!-- Tab 2: Todos -->
-                    <div x-cloak x-show="activeTab === 'todos'" class="space-y-6">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Alpine Task Manager</h3>
-                            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold" 
-                                  x-text="todos.filter(t => !t.completed).length + ' pending'"></span>
-                        </div>
-
-                        <!-- Add Input -->
-                        <div class="flex space-x-2">
-                            <input type="text" 
-                                   x-model="newTodo" 
-                                   @keydown.enter="addTodo()" 
-                                   placeholder="Add a new task..." 
-                                   class="flex-grow px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
-                            <button @click="addTodo()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm transition">
-                                Add
-                            </button>
-                        </div>
-
-                        <!-- List -->
-                        <ul class="space-y-2 max-h-60 overflow-y-auto">
-                            <template x-for="(todo, index) in todos" :key="index">
-                                <li class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-sm">
-                                    <label class="flex items-center space-x-3 cursor-pointer select-none">
-                                        <input type="checkbox" x-model="todo.completed" class="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
-                                        <span :class="{ 'line-through text-slate-400 dark:text-slate-500': todo.completed, 'text-slate-700 dark:text-slate-200': !todo.completed }" x-text="todo.text"></span>
-                                    </label>
-                                    <button @click="removeTodo(index)" class="text-slate-400 hover:text-red-500 transition px-2 py-1">
-                                        ✕
-                                    </button>
-                                </li>
-                            </template>
-                        </ul>
-                    </div>
-
-                    <!-- Tab 3: Text Binding -->
-                    <div x-cloak x-show="activeTab === 'text'" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Type something in real-time:</label>
-                            <input type="text" x-model="userText" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
-                        </div>
-
-                        <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 space-y-2">
-                            <div class="text-xs font-semibold text-slate-400 uppercase">Live Output</div>
-                            <div class="text-lg font-medium text-emerald-600 dark:text-emerald-400" x-text="userText || '(empty)'"></div>
-                            <div class="flex space-x-4 text-xs text-slate-500 pt-2 border-t border-slate-200 dark:border-slate-800">
-                                <span>Length: <strong x-text="userText.length"></strong></span>
-                                <span>Uppercase: <strong x-text="userText.toUpperCase()"></strong></span>
+                    <!-- Tab 1: Featured Rooms -->
+                    <div x-show="activeTab === 'rooms'" class="space-y-4">
+                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-2xl">🌿</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white">Deluxe Garden Room</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Sleeps 2 guests</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-black text-amber-600 dark:text-amber-400">$189</div>
+                                <div class="text-xs text-slate-400">per night</div>
                             </div>
                         </div>
+                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-2xl">🛎️</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white">Executive Suite</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Sleeps 3 guests</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-black text-amber-600 dark:text-amber-400">$289</div>
+                                <div class="text-xs text-slate-400">per night</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-2xl">🌊</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white">Oceanfront Suite</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Sleeps 4 guests</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-black text-amber-600 dark:text-amber-400">$379</div>
+                                <div class="text-xs text-slate-400">per night</div>
+                            </div>
+                        </div>
+                        <a href="rooms.html" class="block text-center text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline pt-2">View all rooms &amp; suites →</a>
+                    </div>
+
+                    <!-- Tab 2: Availability -->
+                    <div x-cloak x-show="activeTab === 'availability'" class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Check-In / Check-Out</h3>
+                        </div>
+
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <div>
+                                <label for="home-checkin" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">Check-In</label>
+                                <input type="date" id="home-checkin" x-model="checkIn" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm">
+                            </div>
+                            <div>
+                                <label for="home-checkout" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">Check-Out</label>
+                                <input type="date" id="home-checkout" x-model="checkOut" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm">
+                            </div>
+                            <div>
+                                <label for="home-guests" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">Guests</label>
+                                <select id="home-guests" x-model="guests" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm">
+                                    <option value="1">1 Guest</option>
+                                    <option value="2">2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4 Guests</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="button" @click="checkAvailability()" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm transition shadow-md shadow-amber-600/30">
+                            Search Availability
+                        </button>
                     </div>
 
                 </div>
             </div>
         </section>
+
+        <!-- Resort Gallery Teaser -->
+        <section class="py-20 bg-white dark:bg-slate-800/40 border-y border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">A Glimpse of Aurelia</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">A few favorite moments from around the resort.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=600&q=80" alt="Sunrise over the ocean from the resort terrace" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group">
+                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=600&q=80" alt="Signature cocktail served at the resort bar" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group">
+                        <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=600&q=80" alt="Resort swimming pool surrounded by loungers" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group">
+                        <img src="https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=600&q=80" alt="Hotel lobby and concierge desk" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&q=80" alt="Tropical flowers in the resort garden" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?auto=format&fit=crop&w=600&q=80" alt="Seashells on the resort's private beach" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=600&q=80" alt="Palm trees lining the resort grounds" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=80" alt="Fine dining table setting at the resort restaurant" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                </div>
+                <div class="text-center mt-8">
+                    <a href="services.html" class="text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline">Explore all amenities →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guest Testimonial Teaser -->
+        <section class="py-20">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="text-amber-400 text-2xl mb-4" aria-hidden="true">★★★★★</div>
+                <blockquote class="text-xl sm:text-2xl font-medium text-slate-800 dark:text-slate-100 leading-relaxed">
+                    "From the moment we arrived, every detail felt intentional. The Oceanfront Suite, the sunset dinner on the beach, the staff who remembered our names — Aurelia set a new standard for what a resort stay should feel like."
+                </blockquote>
+                <div class="mt-6 flex items-center justify-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center text-sm">SK</div>
+                    <div class="text-left">
+                        <p class="text-sm font-bold text-slate-900 dark:text-white">Sarah Jenkins</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Verified Guest · Anniversary Trip</p>
+                    </div>
+                </div>
+                <a href="services.html" class="inline-block mt-8 text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline">Read more guest stories →</a>
+            </div>
+        </section>
     </main>
 
-    <!-- Modal Component -->
-    <div x-cloak 
-         x-show="modalOpen" 
-         class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+
+
+    <!-- Reservation Modal Component -->
+    <div x-cloak
+         x-show="modalOpen"
+         class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="reservation-modal-title"
+         @keydown.escape.window="modalOpen = false">
         <!-- Backdrop -->
-        <div x-show="modalOpen" 
+        <div x-show="modalOpen"
              x-transition:enter="ease-out duration-300"
              x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"
              x-transition:leave="ease-in duration-200"
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
-             @click="modalOpen = false" 
+             @click="modalOpen = false"
              class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
 
         <!-- Modal Dialog -->
-        <div x-show="modalOpen" 
+        <div x-show="modalOpen"
              x-transition:enter="ease-out duration-300"
              x-transition:enter-start="opacity-0 scale-95"
              x-transition:enter-end="opacity-100 scale-100"
@@ -352,19 +518,21 @@
              x-transition:leave-end="opacity-0 scale-95"
              class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 z-10">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Get Started</h3>
-                <button @click="modalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
+                <h3 id="reservation-modal-title" class="text-xl font-bold text-slate-900 dark:text-white">Reserve Your Stay</h3>
+                <button type="button" @click="modalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition" aria-label="Close dialog">
                     ✕
                 </button>
             </div>
             <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
-                You're ready to build! You can customize this template with your own components and styles.
+                Enter your name and our reservations team will follow up to confirm your dates and room preference.
             </p>
             <div class="space-y-3">
-                <button @click="modalOpen = false; showToast('Welcome aboard! 🚀')" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition">
-                    Confirm & Start
+                <label for="reserve-name-index" class="sr-only">Your full name</label>
+                <input type="text" id="reserve-name-index" x-model="reserveName" placeholder="Your full name" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm">
+                <button type="button" @click="modalOpen = false; showToast((reserveName ? reserveName + ', your' : 'Your') + ' request was received! Our team will be in touch. 🏨')" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-medium transition">
+                    Confirm &amp; Request Booking
                 </button>
-                <button @click="modalOpen = false" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                <button type="button" @click="modalOpen = false" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition">
                     Close
                 </button>
             </div>
@@ -372,36 +540,38 @@
     </div>
 
     <!-- Detailed & User-Friendly Footer -->
-    <footer id="about" class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
-        <!-- Main Footer Content -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
-                
+
                 <!-- Column 1: Brand & Overview -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center space-x-3">
-                        <img src="images/logo.jpg" alt="My First Website Logo" class="w-9 h-9 rounded-xl object-cover shadow-md shadow-emerald-500/20" />
-                        <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
-                            My First <span class="text-emerald-500">Website</span>
+                        <img src="images/logo.svg" alt="Aurelia Hotel & Resort" width="36" height="36" class="w-9 h-9">
+                        <span class="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
+                            Aurelia <span class="text-amber-500">Hotel &amp; Resort</span>
                         </span>
                     </div>
                     <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400 max-w-sm">
-                        A modern, lightweight stack designed for build-free reactivity and elegant design. Empowering developers to build fast, reactive web applications directly in HTML.
+                        A refined oceanfront retreat offering elegant rooms, world-class amenities, and warm, attentive hospitality for every kind of traveler.
                     </p>
-                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-semibold">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>Open Source & Free Forever</span>
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-xs font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse" aria-hidden="true"></span>
+                        <span>Now Booking — Limited Rooms Available</span>
                     </div>
                     <!-- Social Links -->
                     <div class="flex items-center space-x-3 pt-2">
-                        <a href="https://github.com/alpinejs/alpine" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="GitHub Repository">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                        <!-- TODO: real social URL -->
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-amber-500 dark:hover:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition" aria-label="Aurelia Hotel & Resort on Instagram">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                         </a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Twitter / X">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        <!-- TODO: real social URL -->
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-amber-500 dark:hover:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition" aria-label="Aurelia Hotel & Resort on Facebook">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
                         </a>
-                        <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Tailwind CSS">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.336 6.182 14.975 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C7.666 17.818 9.027 19.2 12.001 19.2c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.336 13.382 8.975 12 6.001 12z"/></svg>
+                        <!-- TODO: real social URL -->
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-amber-500 dark:hover:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition" aria-label="Aurelia Hotel & Resort on Twitter / X">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                         </a>
                     </div>
                 </div>
@@ -410,41 +580,52 @@
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Quick Navigation</h3>
                     <ul class="space-y-2.5 text-sm">
+<<<<<<< HEAD
                         <li><a href="index.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a></li>
                         <li><a href="features.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a></li>
                         <li><a href="services.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services & Pricing</a></li>
                         <li><a href="about.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a></li>
                         <li><a href="contact.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a></li>
+=======
+                        <li><a href="index.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Home</a></li>
+                        <li><a href="rooms.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Rooms</a></li>
+                        <li><a href="services.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Amenities &amp; Rates</a></li>
+                        <li><a href="about.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Contact Us</a></li>
+>>>>>>> kamal02
                     </ul>
                 </div>
 
-                <!-- Column 3: Frameworks & Docs -->
+                <!-- Column 3: Guest Info -->
                 <div>
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Resources</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Guest Info</h3>
                     <ul class="space-y-2.5 text-sm">
-                        <li><a href="https://alpinejs.dev" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition inline-flex items-center space-x-1"><span>Alpine.js Docs</span><svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a></li>
-                        <li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition inline-flex items-center space-x-1"><span>Tailwind Docs</span><svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a></li>
-                        <li><a href="https://cdn.jsdelivr.net" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">jsDelivr CDN</a></li>
-                        <li><a href="https://tailwindcss.com/docs/installation/play-cdn" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Tailwind Play CDN</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Check-In / Check-Out</a></li>
+                        <li><a href="services.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Hotel Amenities</a></li>
+                        <li><a href="rooms.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Room Booking FAQs</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Group &amp; Event Bookings</a></li>
                     </ul>
                 </div>
 
                 <!-- Column 4: Newsletter / Stay Connected -->
-                <div x-data="{ email: '' }">
+                <div>
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Stay Connected</h3>
                     <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400 mb-3">
-                        Subscribe to get updates on lightweight web dev tips & updates.
+                        Subscribe for seasonal offers, exclusive packages, and resort updates.
                     </p>
-                    <form @submit.prevent="if(email) { showToast('Thanks for subscribing! 💌'); email = ''; }" class="space-y-2">
+                    <form action="https://formspree.io/f/PLACEHOLDER_FORM_ID" method="POST" class="space-y-2">
+                        <!-- TODO: replace PLACEHOLDER_FORM_ID with the real Formspree form ID once created -->
+                        <label for="newsletter-email-index" class="sr-only">Email address</label>
                         <div class="relative">
-                            <input type="email" 
-                                   x-model="email"
-                                   placeholder="Enter your email" 
+                            <input type="email"
+                                   id="newsletter-email-index"
+                                   name="email"
+                                   placeholder="Enter your email"
                                    required
-                                   class="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                                   class="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
                         </div>
-                        <button type="submit" 
-                                class="w-full py-2 px-3 text-xs font-semibold rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 transition shadow-sm">
+                        <button type="submit"
+                                class="w-full py-2 px-3 text-xs font-semibold rounded-xl text-white bg-amber-600 hover:bg-amber-700 transition shadow-sm">
                             Subscribe
                         </button>
                     </form>
@@ -455,19 +636,18 @@
             <!-- Bottom Divider & Links -->
             <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
                 <div class="flex items-center space-x-2">
-                    <p>© 2026 My First Website. Built with ❤️ for web developers.</p>
+                    <p>© 2026 Aurelia Hotel &amp; Resort. All rights reserved.</p>
                 </div>
 
                 <div class="flex items-center space-x-6">
-                    <a href="privacy.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Privacy Policy</a>
-                    <a href="terms.html" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">Terms of Service</a>
-                    <a href="#" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition">MIT License</a>
-                    
+                    <a href="privacy.html" class="transition hover:text-amber-500 dark:hover:text-amber-400">Privacy Policy</a>
+                    <a href="terms.html" class="transition hover:text-amber-500 dark:hover:text-amber-400">Terms of Service</a>
+
                     <!-- Back to Top Button -->
-                    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" 
-                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 text-slate-500 transition"
-                            title="Back to Top">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" @click="window.scrollTo({top: 0, behavior: 'smooth'})"
+                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-amber-500 hover:text-white dark:hover:bg-amber-600 text-slate-500 transition"
+                            aria-label="Back to top">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
                         </svg>
                     </button>
@@ -478,4 +658,3 @@
 
 </body>
 </html>
-

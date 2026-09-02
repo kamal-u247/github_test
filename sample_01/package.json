@@ -1,0 +1,14 @@
+{
+  "name": "aurelia-hotel-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aurelia Hotel & Resort — static site build (TypeScript template functions compiled to plain HTML).",
+  "scripts": {
+    "build": "tsc && node dist/build.js",
+    "dev": "tsc && node dist/build.js --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.9.3"
+  }
+}
