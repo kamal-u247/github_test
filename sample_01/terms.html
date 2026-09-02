@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ 
-    darkMode: false, 
-    mobileMenuOpen: false, 
+<html lang="en" x-data="{
+    darkMode: false,
+    mobileMenuOpen: false,
     modalOpen: false,
     toast: { show: false, message: '' },
     showToast(msg) {
@@ -13,7 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - Alpine + Tailwind Showcase</title>
+    <title>Terms of Service - Aurelia Hotel & Resort</title>
     <link rel="icon" type="image/jpeg" href="images/logo.jpg">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,11 +24,11 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#d4a017',
+                            600: '#b8860b',
+                            700: '#946908',
                         }
                     }
                 }
@@ -44,16 +44,16 @@
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
 
     <!-- Toast Notification -->
-    <div x-cloak 
-         x-show="toast.show" 
-         x-transition:enter="transition ease-out duration-300 transform" 
-         x-transition:enter-start="opacity-0 translate-y-2" 
-         x-transition:enter-end="opacity-100 translate-y-0" 
-         x-transition:leave="transition ease-in duration-200 transform" 
-         x-transition:leave-start="opacity-100 translate-y-0" 
-         x-transition:leave-end="opacity-0 translate-y-2" 
+    <div x-cloak
+         x-show="toast.show"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200 transform"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 translate-y-2"
          class="fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 text-sm font-medium">
-        <svg class="w-5 h-5 text-emerald-400 dark:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5 text-amber-400 dark:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
         </svg>
         <span x-text="toast.message"></span>
@@ -65,23 +65,23 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
                 <a href="index.html" class="flex items-center space-x-3">
-                    <img src="images/logo.jpg" alt="My First Website Logo" class="w-9 h-9 rounded-xl object-cover shadow-md shadow-emerald-500/20" />
+                    <img src="images/logo.jpg" alt="Aurelia Hotel & Resort Logo" class="w-9 h-9 rounded-xl object-cover shadow-md shadow-amber-500/20" />
                     <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
-                        My First <span class="text-emerald-500">Website</span>
+                        Aurelia <span class="text-amber-500">Hotel & Resort</span>
                     </span>
                 </a>
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Home</a>
-                    <a href="index.html#features" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Features</a>
-                    <a href="services.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Services</a>
-                    <a href="about.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">About Us</a>
-                    <a href="contact.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition">Contact Us</a>
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">Home</a>
+                    <a href="rooms.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">Rooms</a>
+                    <a href="services.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">Amenities & Rates</a>
+                    <a href="about.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">About Us</a>
+                    <a href="contact.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">Contact Us</a>
 
                     <!-- Theme Toggle -->
-                    <button @click="darkMode = !darkMode" 
-                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 transition focus:outline-none"
+                    <button @click="darkMode = !darkMode"
+                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition focus:outline-none"
                             title="Toggle Theme">
                         <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
@@ -91,8 +91,8 @@
                         </svg>
                     </button>
 
-                    <button @click="modalOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-sm shadow-emerald-600/30">
-                        Get Started
+                    <button @click="modalOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition shadow-sm shadow-amber-600/30">
+                        Book Now
                     </button>
                 </div>
 
@@ -113,16 +113,16 @@
         </div>
 
         <!-- Mobile Drawer -->
-        <div x-cloak x-show="mobileMenuOpen" 
-             x-transition 
+        <div x-cloak x-show="mobileMenuOpen"
+             x-transition
              class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-6 space-y-3">
             <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
-            <a @click="mobileMenuOpen = false" href="index.html#features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Features</a>
-            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Services</a>
+            <a @click="mobileMenuOpen = false" href="rooms.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Rooms</a>
+            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Amenities & Rates</a>
             <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About Us</a>
             <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Us</a>
-            <button @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition">
-                Get Started
+            <button @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition">
+                Book Now
             </button>
         </div>
     </nav>
@@ -132,7 +132,7 @@
         <!-- Hero Section -->
         <section class="py-12 bg-white dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Legal Agreement</span>
+                <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Legal Agreement</span>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Terms of Service</h1>
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Last updated: September 1, 2026</p>
             </div>
@@ -142,37 +142,44 @@
         <section class="py-16">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-8 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                    
+
                     <div>
                         <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">1. Acceptance of Terms</h2>
                         <p>
-                            By accessing or using our application, websites, services, or templates, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
+                            By booking a room, using our website, or visiting Aurelia Hotel & Resort, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
                         </p>
                     </div>
 
                     <div>
-                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">2. Intellectual Property & Open Source License</h2>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">2. Reservations & Payment</h2>
                         <p>
-                            Unless otherwise explicitly marked, components, source code, and design assets provided under the MIT License are free for commercial and non-commercial use, provided the original copyright notice is retained.
+                            A valid credit card is required to guarantee all reservations. Rates are quoted per room, per night, and are subject to applicable taxes and resort fees unless stated otherwise.
                         </p>
                     </div>
 
                     <div>
-                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">3. User Conduct</h2>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">3. Cancellation Policy</h2>
                         <p>
-                            Users agree not to use the platform for any unlawful activities, attempt unauthorized access to server infrastructure, or transmit malicious code through contact forms or interactive components.
+                            Reservations may be cancelled free of charge up to 48 hours before the scheduled check-in date. Cancellations made within 48 hours of arrival, or no-shows, may be charged the equivalent of one night's stay.
                         </p>
                     </div>
 
                     <div>
-                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">4. Limitation of Liability</h2>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">4. Guest Conduct</h2>
                         <p>
-                            In no event shall the authors or copyright holders be liable for any claim, damages, or other liability arising from out of or in connection with the software or the use of other dealings in the software.
+                            Guests agree to respect hotel property, fellow guests, and staff. The hotel reserves the right to refuse service or remove guests engaging in unlawful, unsafe, or disruptive behavior without refund.
                         </p>
                     </div>
 
                     <div>
-                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">5. Governing Law</h2>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">5. Limitation of Liability</h2>
+                        <p>
+                            Aurelia Hotel & Resort is not liable for loss, theft, or damage to personal belongings except where required by law. Guests are encouraged to use in-room safes for valuables.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">6. Governing Law</h2>
                         <p>
                             These terms shall be governed and construed in accordance with the laws of California, United States, without regard to its conflict of law provisions.
                         </p>
@@ -187,11 +194,11 @@
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-                <p>© 2026 My First Website. All rights reserved.</p>
+                <p>© 2026 Aurelia Hotel & Resort. All rights reserved.</p>
                 <div class="flex items-center space-x-6">
-                    <a href="privacy.html" class="hover:text-emerald-500 transition">Privacy Policy</a>
-                    <a href="terms.html" class="font-semibold text-emerald-600 dark:text-emerald-400">Terms of Service</a>
-                    <a href="index.html" class="hover:text-emerald-500 transition">Home</a>
+                    <a href="privacy.html" class="hover:text-amber-500 transition">Privacy Policy</a>
+                    <a href="terms.html" class="font-semibold text-amber-600 dark:text-amber-400">Terms of Service</a>
+                    <a href="index.html" class="hover:text-amber-500 transition">Home</a>
                 </div>
             </div>
         </div>
@@ -199,4 +206,3 @@
 
 </body>
 </html>
-

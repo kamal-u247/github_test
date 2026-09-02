@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{
+    darkMode: false,
+    mobileMenuOpen: false,
+    modalOpen: false,
+    reserveName: '',
+    activeFilter: 'all',
+    detailRoom: null,
+    toast: { show: false, message: '' },
+    showToast(msg) {
+        this.toast.message = msg;
+        this.toast.show = true;
+        setTimeout(() => { this.toast.show = false; }, 3000);
+    },
+    openDetail(room) {
+        this.detailRoom = room;
+    },
+    rooms: [
+        {
+            id: 'garden',
+            name: 'Deluxe Garden Room',
+            tagline: 'Ideal for couples & solo travelers',
+            category: 'standard',
+            img: '🌿',
+            gradient: 'from-emerald-400 to-teal-600',
+            price: 189,
+            peakPrice: 219,
+            size: '380 sq ft',
+            beds: '1 King or 2 Queen',
+            capacity: 2,
+            view: 'Garden view',
+            description: 'A calm retreat surrounded by lush tropical landscaping, the Deluxe Garden Room pairs understated elegance with everyday comfort — perfect for a quiet getaway or a first visit to Aurelia.',
+            amenities: ['Private garden-view balcony', 'Complimentary breakfast for two', 'Free high-speed Wi-Fi & smart TV', 'Rainfall shower & premium bath amenities', 'Nespresso machine & minibar', 'Daily housekeeping'],
+        },
+        {
+            id: 'executive',
+            name: 'Executive Suite',
+            tagline: 'Great for families & extended stays',
+            category: 'suite',
+            img: '🛎️',
+            gradient: 'from-amber-400 to-orange-600',
+            price: 289,
+            peakPrice: 339,
+            size: '620 sq ft',
+            beds: '1 King + Sofa Bed',
+            capacity: 3,
+            view: 'Partial ocean view',
+            description: 'Spread out in a separate living area with partial ocean views. The Executive Suite is designed for families and longer stays, with extra space, thoughtful amenities, and priority access to resort experiences.',
+            amenities: ['Separate living & dining area', 'Partial ocean-view balcony', 'Daily housekeeping & stocked minibar', 'Priority spa & restaurant booking', 'Walk-in closet & work desk', 'Bathrobe & slipper set for two'],
+            popular: true,
+        },
+        {
+            id: 'oceanfront',
+            name: 'Oceanfront Suite',
+            tagline: 'For a truly indulgent escape',
+            category: 'suite',
+            img: '🌊',
+            gradient: 'from-sky-400 to-blue-600',
+            price: 379,
+            peakPrice: 449,
+            size: '850 sq ft',
+            beds: '1 King',
+            capacity: 4,
+            view: 'Floor-to-ceiling ocean view',
+            description: 'Wake up to uninterrupted horizon views in our signature Oceanfront Suite. Floor-to-ceiling windows, a private terrace, and dedicated butler service make this our most indulgent accommodation.',
+            amenities: ['Floor-to-ceiling ocean views', 'Private terrace & soaking tub', 'Dedicated butler service', 'Complimentary sunset canapés', 'Premium in-room dining menu', 'Late check-out on request'],
+        },
+        {
+            id: 'family',
+            name: 'Family Oceanview Room',
+            tagline: 'Space and comfort for the whole family',
+            category: 'family',
+            img: '🏖️',
+            gradient: 'from-cyan-400 to-sky-600',
+            price: 259,
+            peakPrice: 299,
+            size: '540 sq ft',
+            beds: '2 Queen + Bunk Nook',
+            capacity: 5,
+            view: 'Partial ocean view',
+            description: 'Purpose-built for families, with a kid-friendly bunk nook, connecting-room options, and easy access to the pool deck and kids\' club — without compromising on ocean views.',
+            amenities: ['Connecting room option', 'Bunk nook for children', 'Pool deck & kids\' club access', 'Board games & streaming library', 'Mini fridge stocked with snacks', 'Stroller & crib on request'],
+        },
+        {
+            id: 'penthouse',
+            name: 'Presidential Penthouse',
+            tagline: 'The pinnacle of the Aurelia experience',
+            category: 'suite',
+            img: '👑',
+            gradient: 'from-purple-400 to-indigo-600',
+            price: 749,
+            peakPrice: 899,
+            size: '1,650 sq ft',
+            beds: '2 King + Study',
+            capacity: 6,
+            view: '360° panoramic ocean & city view',
+            description: 'Occupying the top floor of the resort, the Presidential Penthouse offers a private rooftop plunge pool, panoramic views in every direction, and round-the-clock personal service for a truly unforgettable stay.',
+            amenities: ['Private rooftop plunge pool', 'Two king bedrooms + private study', 'Personal butler & chauffeur service', 'In-suite dining by our Executive Chef', 'Complimentary airport transfer', 'Dedicated check-in & check-out lounge'],
+        },
+        {
+            id: 'accessible',
+            name: 'Accessible Garden Room',
+            tagline: 'Thoughtfully designed for every guest',
+            category: 'standard',
+            img: '♿',
+            gradient: 'from-lime-400 to-emerald-600',
+            price: 189,
+            peakPrice: 219,
+            size: '400 sq ft',
+            beds: '1 King',
+            capacity: 2,
+            view: 'Garden view',
+            description: 'Fully accessible from entry to bath, this ground-floor garden room features roll-in showers, widened doorways, and lowered fixtures — all without sacrificing the comfort and style found across Aurelia.',
+            amenities: ['Roll-in accessible shower', 'Widened doorways & turning space', 'Lowered closet & bathroom fixtures', 'Visual & vibrating alert kit available', 'Ground-floor, near main entrance', 'Free Wi-Fi & smart TV'],
+        }
+    ]
+}" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms & Suites - Aurelia Hotel & Resort</title>
+    <link rel="icon" type="image/jpeg" href="images/logo.jpg">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#d4a017',
+                            600: '#b8860b',
+                            700: '#946908',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
+
+    <!-- Toast Notification -->
+    <div x-cloak
+         x-show="toast.show"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="opacity-0 translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-200 transform"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 translate-y-2"
+         class="fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 text-sm font-medium">
+        <svg class="w-5 h-5 text-amber-400 dark:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span x-text="toast.message"></span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <img src="images/logo.jpg" alt="Aurelia Hotel & Resort Logo" class="w-9 h-9 rounded-xl object-cover shadow-md shadow-amber-500/20" />
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                        Aurelia <span class="text-amber-500">Hotel & Resort</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">Home</a>
+                    <a href="rooms.html" class="text-sm font-semibold text-amber-600 dark:text-amber-400 transition">Rooms</a>
+                    <a href="services.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">Amenities & Rates</a>
+                    <a href="about.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">About Us</a>
+                    <a href="contact.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition">Contact Us</a>
+
+                    <!-- Theme Toggle -->
+                    <button @click="darkMode = !darkMode"
+                            class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400 transition focus:outline-none"
+                            title="Toggle Theme">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg x-cloak x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+
+                    <button @click="modalOpen = true" class="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition shadow-sm shadow-amber-600/30">
+                        Book Now
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center space-x-2 md:hidden">
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        <span x-show="!darkMode">🌙</span>
+                        <span x-cloak x-show="darkMode">☀️</span>
+                    </button>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path x-cloak x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div x-cloak x-show="mobileMenuOpen"
+             x-transition
+             class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-6 space-y-3">
+            <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Home</a>
+            <a @click="mobileMenuOpen = false" href="rooms.html" class="block px-3 py-2 rounded-md text-base font-medium text-amber-600 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800">Rooms</a>
+            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Amenities & Rates</a>
+            <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About Us</a>
+            <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact Us</a>
+            <button @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition">
+                Book Now
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden py-16 lg:py-24 bg-gradient-to-b from-amber-50/50 to-transparent dark:from-slate-800/40 dark:to-transparent border-b border-slate-200/60 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-semibold tracking-wide uppercase mb-4">
+                    <span>🛏️ Rooms & Suites</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-3xl mx-auto leading-tight">
+                    A Room for Every <span class="text-amber-500">Kind of Stay</span>
+                </h1>
+                <p class="mt-4 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    From garden-view retreats to our panoramic Presidential Penthouse, explore every accommodation at Aurelia and find the one that fits your trip.
+                </p>
+
+                <!-- Quick Stats -->
+                <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                    <div class="p-4 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60 backdrop-blur">
+                        <div class="text-2xl font-extrabold text-amber-500">6</div>
+                        <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Room Categories</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60 backdrop-blur">
+                        <div class="text-2xl font-extrabold text-amber-500">120+</div>
+                        <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Total Rooms</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60 backdrop-blur">
+                        <div class="text-2xl font-extrabold text-amber-500">4.9★</div>
+                        <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Average Rating</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/70 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60 backdrop-blur">
+                        <div class="text-2xl font-extrabold text-amber-500">24/7</div>
+                        <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Front Desk & Concierge</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Background Glow -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-amber-500/10 to-sky-500/10 blur-3xl pointer-events-none rounded-full"></div>
+        </section>
+
+        <!-- Filter Bar -->
+        <section class="py-10 sticky top-16 z-30 bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200/60 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">Browse by Category</h2>
+                    <div class="flex flex-wrap justify-center gap-2 p-1.5 bg-slate-200/70 dark:bg-slate-800 rounded-xl">
+                        <button @click="activeFilter = 'all'"
+                                :class="{ 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm': activeFilter === 'all', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeFilter !== 'all' }"
+                                class="px-4 py-2 rounded-lg text-xs font-bold transition">All Rooms</button>
+                        <button @click="activeFilter = 'standard'"
+                                :class="{ 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm': activeFilter === 'standard', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeFilter !== 'standard' }"
+                                class="px-4 py-2 rounded-lg text-xs font-bold transition">Standard</button>
+                        <button @click="activeFilter = 'suite'"
+                                :class="{ 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm': activeFilter === 'suite', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeFilter !== 'suite' }"
+                                class="px-4 py-2 rounded-lg text-xs font-bold transition">Suites</button>
+                        <button @click="activeFilter = 'family'"
+                                :class="{ 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm': activeFilter === 'family', 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white': activeFilter !== 'family' }"
+                                class="px-4 py-2 rounded-lg text-xs font-bold transition">Family</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rooms Grid -->
+        <section class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <template x-for="room in rooms.filter(r => activeFilter === 'all' || r.category === activeFilter)" :key="room.id">
+                        <div class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col relative">
+                            <div x-show="room.popular" class="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-amber-500 text-white font-extrabold text-[10px] tracking-wider uppercase shadow-md">
+                                Most Popular
+                            </div>
+                            <!-- Image / Icon Banner -->
+                            <div class="h-44 flex items-center justify-center text-6xl bg-gradient-to-tr group-hover:scale-105 transition-transform duration-300" :class="room.gradient">
+                                <span x-text="room.img"></span>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-lg font-bold text-slate-900 dark:text-white" x-text="room.name"></h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4" x-text="room.tagline"></p>
+
+                                <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-300 mb-4">
+                                    <div class="flex items-center space-x-1.5"><span>📐</span><span x-text="room.size"></span></div>
+                                    <div class="flex items-center space-x-1.5"><span>🛏️</span><span x-text="room.beds"></span></div>
+                                    <div class="flex items-center space-x-1.5"><span>👥</span><span x-text="'Sleeps ' + room.capacity"></span></div>
+                                    <div class="flex items-center space-x-1.5"><span>🖼️</span><span x-text="room.view"></span></div>
+                                </div>
+
+                                <div class="flex items-baseline mb-4 mt-auto pt-2">
+                                    <span class="text-3xl font-extrabold text-slate-900 dark:text-white" x-text="'$' + room.price"></span>
+                                    <span class="text-xs text-slate-500 dark:text-slate-400 ml-1">/ night</span>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <button @click="openDetail(room)" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-100 font-semibold text-xs hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                                        View Details
+                                    </button>
+                                    <button @click="modalOpen = true" class="flex-1 py-2.5 rounded-xl bg-amber-600 text-white font-semibold text-xs hover:bg-amber-700 transition shadow-md shadow-amber-600/30">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shared Room Amenities -->
+        <section class="py-16 bg-white dark:bg-slate-800/40 border-y border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Included in Every Room</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">Comfort essentials, standard across every category.</p>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 text-center">
+                    <div class="p-4">
+                        <div class="text-3xl mb-2">📶</div>
+                        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Free High-Speed Wi-Fi</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-3xl mb-2">❄️</div>
+                        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Climate Control</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-3xl mb-2">📺</div>
+                        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Smart TV & Streaming</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-3xl mb-2">☕</div>
+                        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Nespresso & Minibar</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-3xl mb-2">🧴</div>
+                        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Luxury Bath Amenities</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-3xl mb-2">🧹</div>
+                        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Daily Housekeeping</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-20">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Room Booking FAQs</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400">Answers to the questions we hear most often.</p>
+                </div>
+
+                <div class="space-y-4" x-data="{ open: 0 }">
+                    <template x-for="(faq, i) in [
+                        { q: 'What time is check-in and check-out?', a: 'Check-in begins at 3:00 PM and check-out is by 11:00 AM. Early check-in and late check-out can be arranged based on availability — just ask our front desk or concierge.' },
+                        { q: 'Can I request a connecting room for my family?', a: 'Yes. The Family Oceanview Room offers a connecting-room option, and our reservations team can pair any two rooms on request, subject to availability.' },
+                        { q: 'Is breakfast included with my room?', a: 'Complimentary breakfast for two is included with the Deluxe Garden and Accessible Garden Rooms. Suite categories include a full breakfast credit redeemable at any of our three restaurants.' },
+                        { q: 'Do you offer accessible accommodations?', a: 'Yes, our Accessible Garden Room is a ground-floor room with a roll-in shower, widened doorways, and lowered fixtures. Please note any accessibility needs when booking so we can prepare accordingly.' },
+                        { q: 'What is your cancellation policy?', a: 'Standard reservations can be cancelled free of charge up to 48 hours before arrival. Peak-season and package bookings may carry different terms — see our Terms of Service for full details.' }
+                    ]" :key="i">
+                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden">
+                            <button @click="open = (open === i ? -1 : i)" class="w-full flex items-center justify-between p-5 text-left">
+                                <span class="font-semibold text-sm text-slate-900 dark:text-white" x-text="faq.q"></span>
+                                <svg class="w-5 h-5 text-amber-500 flex-shrink-0 ml-4 transition-transform" :class="{ 'rotate-180': open === i }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div x-show="open === i" x-collapse class="px-5 pb-5 text-sm text-slate-600 dark:text-slate-400 leading-relaxed" x-text="faq.a"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Banner -->
+        <section class="py-16">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="rounded-3xl bg-gradient-to-r from-amber-600 to-orange-600 p-10 sm:p-14 text-center shadow-xl">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3">Ready to Find Your Room?</h2>
+                    <p class="text-amber-50 max-w-xl mx-auto mb-8">Reserve directly with us for the best rate guarantee, free cancellation, and complimentary room upgrades when available.</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button @click="modalOpen = true" class="px-8 py-3.5 rounded-xl font-semibold text-amber-700 bg-white hover:bg-amber-50 transition shadow-lg">
+                            Reserve Your Stay
+                        </button>
+                        <a href="contact.html" class="px-8 py-3.5 rounded-xl font-semibold text-white border-2 border-white/70 hover:bg-white/10 transition">
+                            Talk to Reservations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Room Detail Modal -->
+    <div x-cloak
+         x-show="detailRoom !== null"
+         class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+        <div x-show="detailRoom !== null"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="detailRoom = null"
+             class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+
+        <div x-show="detailRoom !== null"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 dark:border-slate-700 z-10 overflow-hidden max-h-[90vh] flex flex-col"
+             @keydown.escape.window="detailRoom = null">
+            <template x-if="detailRoom">
+                <div class="overflow-y-auto">
+                    <div class="h-40 flex items-center justify-center text-7xl bg-gradient-to-tr relative" :class="detailRoom.gradient">
+                        <span x-text="detailRoom.img"></span>
+                        <button @click="detailRoom = null" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-black/20 hover:bg-black/30 text-white transition">
+                            ✕
+                        </button>
+                    </div>
+                    <div class="p-6 sm:p-8">
+                        <div class="flex items-start justify-between mb-1">
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white" x-text="detailRoom.name"></h3>
+                            <div class="text-right flex-shrink-0 ml-4">
+                                <div class="text-2xl font-extrabold text-amber-600 dark:text-amber-400" x-text="'$' + detailRoom.price"></div>
+                                <div class="text-[11px] text-slate-400">per night (standard)</div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-5" x-text="detailRoom.tagline"></p>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 text-center">
+                                <div class="text-lg">📐</div>
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1" x-text="detailRoom.size"></div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 text-center">
+                                <div class="text-lg">🛏️</div>
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1" x-text="detailRoom.beds"></div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 text-center">
+                                <div class="text-lg">👥</div>
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1" x-text="'Sleeps ' + detailRoom.capacity"></div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 text-center">
+                                <div class="text-lg">🖼️</div>
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1" x-text="detailRoom.view"></div>
+                            </div>
+                        </div>
+
+                        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6" x-text="detailRoom.description"></p>
+
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">Room Amenities</h4>
+                        <ul class="grid sm:grid-cols-2 gap-2.5 text-xs text-slate-600 dark:text-slate-300 mb-6">
+                            <template x-for="a in detailRoom.amenities" :key="a">
+                                <li class="flex items-center space-x-2"><span class="text-amber-500">✓</span><span x-text="a"></span></li>
+                            </template>
+                        </ul>
+
+                        <div class="flex gap-3">
+                            <button @click="detailRoom = null" class="flex-1 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-100 font-semibold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                                Close
+                            </button>
+                            <button @click="detailRoom = null; modalOpen = true" class="flex-1 py-3 rounded-xl bg-amber-600 text-white font-semibold text-sm hover:bg-amber-700 transition shadow-md shadow-amber-600/30">
+                                Book This Room
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- Reservation Modal Component -->
+    <div x-cloak
+         x-show="modalOpen"
+         class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div x-show="modalOpen"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="modalOpen = false"
+             class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+
+        <!-- Modal Dialog -->
+        <div x-show="modalOpen"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 z-10">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Reserve Your Stay</h3>
+                <button @click="modalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
+                    ✕
+                </button>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                Choose a room type or request a custom package for your trip.
+            </p>
+            <div class="space-y-3">
+                <input type="text" x-model="reserveName" placeholder="Your full name" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm">
+                <button @click="modalOpen = false; showToast((reserveName ? reserveName + ', your' : 'Your') + ' request was received! Our team will be in touch. 🏨')" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-medium transition">
+                    Confirm & Request Booking
+                </button>
+                <button @click="modalOpen = false" class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+                <!-- Column 1: Brand -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <img src="images/logo.jpg" alt="Aurelia Hotel & Resort Logo" class="w-9 h-9 rounded-xl object-cover shadow-md shadow-amber-500/20" />
+                        <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                            Aurelia <span class="text-amber-500">Hotel & Resort</span>
+                        </span>
+                    </div>
+                    <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400 max-w-sm">
+                        A refined oceanfront retreat offering elegant rooms, world-class amenities, and warm, attentive hospitality.
+                    </p>
+                </div>
+
+                <!-- Column 2: Navigation -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Quick Navigation</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="index.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Home</a></li>
+                        <li><a href="rooms.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Rooms</a></li>
+                        <li><a href="services.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Amenities & Rates</a></li>
+                        <li><a href="about.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Guest Info -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Guest Info</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="contact.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Check-In / Check-Out</a></li>
+                        <li><a href="services.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Hotel Amenities</a></li>
+                        <li><a href="rooms.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Room Booking FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Newsletter -->
+                <div x-data="{ email: '' }">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-4">Stay Connected</h3>
+                    <form @submit.prevent="if(email) { showToast('Thanks for subscribing! 💌'); email = ''; }" class="space-y-2">
+                        <input type="email" x-model="email" placeholder="Enter your email" required class="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <button type="submit" class="w-full py-2 px-3 text-xs font-semibold rounded-xl text-white bg-amber-600 hover:bg-amber-700 transition">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bottom Divider -->
+            <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                <p>© 2026 Aurelia Hotel & Resort. All rights reserved.</p>
+                <div class="flex items-center space-x-6">
+                    <a href="privacy.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-amber-500 dark:hover:text-amber-400 transition">Terms of Service</a>
+                    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-amber-500 hover:text-white transition">↑ Top</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
