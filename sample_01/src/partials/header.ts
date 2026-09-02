@@ -1,3 +1,19 @@
+import type { PageContext } from '../lib/layout';
+
+// Was src/_partials/header.njk
+
+export function renderHeader(ctx: PageContext): string {
+    const navClass = (nav: PageContext['activeNav']) =>
+        nav === ctx.activeNav
+            ? 'text-amber-600 dark:text-amber-400 font-semibold'
+            : 'text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400';
+
+    const mobileNavClass = (nav: PageContext['activeNav']) =>
+        nav === ctx.activeNav
+            ? 'text-amber-600 dark:text-amber-400'
+            : 'text-slate-700 dark:text-slate-200';
+
+    return `
     <!-- Utility Bar -->
     <div class="hidden sm:block bg-slate-900 dark:bg-black text-slate-300 text-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between">
@@ -39,11 +55,11 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="text-sm font-medium transition {{ 'text-amber-600 dark:text-amber-400 font-semibold' if activeNav == 'home' else 'text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400' }}">Home</a>
-                    <a href="rooms.html" class="text-sm font-medium transition {{ 'text-amber-600 dark:text-amber-400 font-semibold' if activeNav == 'rooms' else 'text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400' }}">Rooms</a>
-                    <a href="services.html" class="text-sm font-medium transition {{ 'text-amber-600 dark:text-amber-400 font-semibold' if activeNav == 'services' else 'text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400' }}">Amenities &amp; Rates</a>
-                    <a href="about.html" class="text-sm font-medium transition {{ 'text-amber-600 dark:text-amber-400 font-semibold' if activeNav == 'about' else 'text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400' }}">About Us</a>
-                    <a href="contact.html" class="text-sm font-medium transition {{ 'text-amber-600 dark:text-amber-400 font-semibold' if activeNav == 'contact' else 'text-slate-600 dark:text-slate-300 hover:text-amber-500 dark:hover:text-amber-400' }}">Contact Us</a>
+                    <a href="index.html" class="text-sm font-medium transition ${navClass('home')}">Home</a>
+                    <a href="rooms.html" class="text-sm font-medium transition ${navClass('rooms')}">Rooms</a>
+                    <a href="services.html" class="text-sm font-medium transition ${navClass('services')}">Amenities &amp; Rates</a>
+                    <a href="about.html" class="text-sm font-medium transition ${navClass('about')}">About Us</a>
+                    <a href="contact.html" class="text-sm font-medium transition ${navClass('contact')}">Contact Us</a>
 
                     <!-- Theme Toggle -->
                     <button type="button" @click="darkMode = !darkMode"
@@ -87,13 +103,14 @@
         <div id="mobile-menu" x-cloak x-show="mobileMenuOpen"
              x-transition
              class="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-6 space-y-3">
-            <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 {{ 'text-amber-600 dark:text-amber-400' if activeNav == 'home' else 'text-slate-700 dark:text-slate-200' }}">Home</a>
-            <a @click="mobileMenuOpen = false" href="rooms.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 {{ 'text-amber-600 dark:text-amber-400' if activeNav == 'rooms' else 'text-slate-700 dark:text-slate-200' }}">Rooms</a>
-            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 {{ 'text-amber-600 dark:text-amber-400' if activeNav == 'services' else 'text-slate-700 dark:text-slate-200' }}">Amenities &amp; Rates</a>
-            <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 {{ 'text-amber-600 dark:text-amber-400' if activeNav == 'about' else 'text-slate-700 dark:text-slate-200' }}">About Us</a>
-            <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 {{ 'text-amber-600 dark:text-amber-400' if activeNav == 'contact' else 'text-slate-700 dark:text-slate-200' }}">Contact Us</a>
+            <a @click="mobileMenuOpen = false" href="index.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 ${mobileNavClass('home')}">Home</a>
+            <a @click="mobileMenuOpen = false" href="rooms.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 ${mobileNavClass('rooms')}">Rooms</a>
+            <a @click="mobileMenuOpen = false" href="services.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 ${mobileNavClass('services')}">Amenities &amp; Rates</a>
+            <a @click="mobileMenuOpen = false" href="about.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 ${mobileNavClass('about')}">About Us</a>
+            <a @click="mobileMenuOpen = false" href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 ${mobileNavClass('contact')}">Contact Us</a>
             <button type="button" @click="mobileMenuOpen = false; modalOpen = true" class="w-full text-center px-4 py-2 font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition">
                 Book Now
             </button>
         </div>
-    </nav>
+    </nav>`;
+}

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="
-{
+<html lang="en" x-data="{
     darkMode: false,
     mobileMenuOpen: false,
     modalOpen: false,
@@ -11,14 +10,15 @@
         this.toast.show = true;
         setTimeout(() => { this.toast.show = false; }, 3000);
     },
+    
     activeFilter: 'all',
     detailRoom: null,
     openDetail(room) {
         this.detailRoom = room;
     },
     rooms: [{&quot;id&quot;:&quot;garden&quot;,&quot;name&quot;:&quot;Deluxe Garden Room&quot;,&quot;tagline&quot;:&quot;Ideal for couples &amp; solo travelers&quot;,&quot;category&quot;:&quot;standard&quot;,&quot;img&quot;:&quot;🌿&quot;,&quot;gradient&quot;:&quot;from-emerald-400 to-teal-600&quot;,&quot;price&quot;:189,&quot;peakPrice&quot;:219,&quot;size&quot;:&quot;380 sq ft&quot;,&quot;beds&quot;:&quot;1 King or 2 Queen&quot;,&quot;capacity&quot;:2,&quot;view&quot;:&quot;Garden view&quot;,&quot;description&quot;:&quot;A calm retreat surrounded by lush tropical landscaping, the Deluxe Garden Room pairs understated elegance with everyday comfort — perfect for a quiet getaway or a first visit to Aurelia.&quot;,&quot;amenities&quot;:[&quot;Private garden-view balcony&quot;,&quot;Complimentary breakfast for two&quot;,&quot;Free high-speed Wi-Fi &amp; smart TV&quot;,&quot;Rainfall shower &amp; premium bath amenities&quot;,&quot;Nespresso machine &amp; minibar&quot;,&quot;Daily housekeeping&quot;],&quot;popular&quot;:false,&quot;featured&quot;:true},{&quot;id&quot;:&quot;executive&quot;,&quot;name&quot;:&quot;Executive Suite&quot;,&quot;tagline&quot;:&quot;Great for families &amp; extended stays&quot;,&quot;category&quot;:&quot;suite&quot;,&quot;img&quot;:&quot;🛎️&quot;,&quot;gradient&quot;:&quot;from-amber-400 to-orange-600&quot;,&quot;price&quot;:289,&quot;peakPrice&quot;:339,&quot;size&quot;:&quot;620 sq ft&quot;,&quot;beds&quot;:&quot;1 King + Sofa Bed&quot;,&quot;capacity&quot;:3,&quot;view&quot;:&quot;Partial ocean view&quot;,&quot;description&quot;:&quot;Spread out in a separate living area with partial ocean views. The Executive Suite is designed for families and longer stays, with extra space, thoughtful amenities, and priority access to resort experiences.&quot;,&quot;amenities&quot;:[&quot;Separate living &amp; dining area&quot;,&quot;Partial ocean-view balcony&quot;,&quot;Daily housekeeping &amp; stocked minibar&quot;,&quot;Priority spa &amp; restaurant booking&quot;,&quot;Walk-in closet &amp; work desk&quot;,&quot;Bathrobe &amp; slipper set for two&quot;],&quot;popular&quot;:true,&quot;featured&quot;:true},{&quot;id&quot;:&quot;oceanfront&quot;,&quot;name&quot;:&quot;Oceanfront Suite&quot;,&quot;tagline&quot;:&quot;For a truly indulgent escape&quot;,&quot;category&quot;:&quot;suite&quot;,&quot;img&quot;:&quot;🌊&quot;,&quot;gradient&quot;:&quot;from-sky-400 to-blue-600&quot;,&quot;price&quot;:379,&quot;peakPrice&quot;:449,&quot;size&quot;:&quot;850 sq ft&quot;,&quot;beds&quot;:&quot;1 King&quot;,&quot;capacity&quot;:4,&quot;view&quot;:&quot;Floor-to-ceiling ocean view&quot;,&quot;description&quot;:&quot;Wake up to uninterrupted horizon views in our signature Oceanfront Suite. Floor-to-ceiling windows, a private terrace, and dedicated butler service make this our most indulgent accommodation.&quot;,&quot;amenities&quot;:[&quot;Floor-to-ceiling ocean views&quot;,&quot;Private terrace &amp; soaking tub&quot;,&quot;Dedicated butler service&quot;,&quot;Complimentary sunset canapés&quot;,&quot;Premium in-room dining menu&quot;,&quot;Late check-out on request&quot;],&quot;popular&quot;:false,&quot;featured&quot;:true},{&quot;id&quot;:&quot;family&quot;,&quot;name&quot;:&quot;Family Oceanview Room&quot;,&quot;tagline&quot;:&quot;Space and comfort for the whole family&quot;,&quot;category&quot;:&quot;family&quot;,&quot;img&quot;:&quot;🏖️&quot;,&quot;gradient&quot;:&quot;from-cyan-400 to-sky-600&quot;,&quot;price&quot;:259,&quot;peakPrice&quot;:299,&quot;size&quot;:&quot;540 sq ft&quot;,&quot;beds&quot;:&quot;2 Queen + Bunk Nook&quot;,&quot;capacity&quot;:5,&quot;view&quot;:&quot;Partial ocean view&quot;,&quot;description&quot;:&quot;Purpose-built for families, with a kid-friendly bunk nook, connecting-room options, and easy access to the pool deck and kids' club — without compromising on ocean views.&quot;,&quot;amenities&quot;:[&quot;Connecting room option&quot;,&quot;Bunk nook for children&quot;,&quot;Pool deck &amp; kids' club access&quot;,&quot;Board games &amp; streaming library&quot;,&quot;Mini fridge stocked with snacks&quot;,&quot;Stroller &amp; crib on request&quot;],&quot;popular&quot;:false,&quot;featured&quot;:false},{&quot;id&quot;:&quot;penthouse&quot;,&quot;name&quot;:&quot;Presidential Penthouse&quot;,&quot;tagline&quot;:&quot;The pinnacle of the Aurelia experience&quot;,&quot;category&quot;:&quot;suite&quot;,&quot;img&quot;:&quot;👑&quot;,&quot;gradient&quot;:&quot;from-purple-400 to-indigo-600&quot;,&quot;price&quot;:749,&quot;peakPrice&quot;:899,&quot;size&quot;:&quot;1,650 sq ft&quot;,&quot;beds&quot;:&quot;2 King + Study&quot;,&quot;capacity&quot;:6,&quot;view&quot;:&quot;360° panoramic ocean &amp; city view&quot;,&quot;description&quot;:&quot;Occupying the top floor of the resort, the Presidential Penthouse offers a private rooftop plunge pool, panoramic views in every direction, and round-the-clock personal service for a truly unforgettable stay.&quot;,&quot;amenities&quot;:[&quot;Private rooftop plunge pool&quot;,&quot;Two king bedrooms + private study&quot;,&quot;Personal butler &amp; chauffeur service&quot;,&quot;In-suite dining by our Executive Chef&quot;,&quot;Complimentary airport transfer&quot;,&quot;Dedicated check-in &amp; check-out lounge&quot;],&quot;popular&quot;:false,&quot;featured&quot;:false},{&quot;id&quot;:&quot;accessible&quot;,&quot;name&quot;:&quot;Accessible Garden Room&quot;,&quot;tagline&quot;:&quot;Thoughtfully designed for every guest&quot;,&quot;category&quot;:&quot;standard&quot;,&quot;img&quot;:&quot;♿&quot;,&quot;gradient&quot;:&quot;from-lime-400 to-emerald-600&quot;,&quot;price&quot;:189,&quot;peakPrice&quot;:219,&quot;size&quot;:&quot;400 sq ft&quot;,&quot;beds&quot;:&quot;1 King&quot;,&quot;capacity&quot;:2,&quot;view&quot;:&quot;Garden view&quot;,&quot;description&quot;:&quot;Fully accessible from entry to bath, this ground-floor garden room features roll-in showers, widened doorways, and lowered fixtures — all without sacrificing the comfort and style found across Aurelia.&quot;,&quot;amenities&quot;:[&quot;Roll-in accessible shower&quot;,&quot;Widened doorways &amp; turning space&quot;,&quot;Lowered closet &amp; bathroom fixtures&quot;,&quot;Visual &amp; vibrating alert kit available&quot;,&quot;Ground-floor, near main entrance&quot;,&quot;Free Wi-Fi &amp; smart TV&quot;],&quot;popular&quot;:false,&quot;featured&quot;:false}],
-}
-" :class="{ 'dark': darkMode }">
+
+}" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,6 +47,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
 
+    
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -76,6 +77,7 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
 
+
     <!-- Toast Notification -->
     <div x-cloak
          x-show="toast.show"
@@ -93,6 +95,7 @@
         </svg>
         <span x-text="toast.message"></span>
     </div>
+
     <!-- Utility Bar -->
     <div class="hidden sm:block bg-slate-900 dark:bg-black text-slate-300 text-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between">
@@ -192,6 +195,7 @@
             </button>
         </div>
     </nav>
+
 
     <!-- Main Content -->
     <main class="flex-grow">
@@ -385,6 +389,7 @@
         </section>
     </main>
 
+
     <!-- Room Detail Modal -->
     <div x-cloak
          x-show="detailRoom !== null"
@@ -470,6 +475,7 @@
             </template>
         </div>
     </div>
+
     <!-- Reservation Modal Component -->
     <div x-cloak
          x-show="modalOpen"
@@ -519,6 +525,7 @@
             </div>
         </div>
     </div>
+
     <!-- Detailed & User-Friendly Footer -->
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">

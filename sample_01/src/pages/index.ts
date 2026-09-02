@@ -1,39 +1,28 @@
-{% extends "base.njk" %}
-{% set title = "Aurelia Hotel & Resort" %}
-{% set description = "A refined oceanfront retreat offering elegant rooms, world-class amenities, and warm, attentive hospitality. Discover your oceanfront escape at Aurelia Hotel & Resort." %}
-{% set activeNav = "home" %}
-{% set isHome = true %}
-{% set extraState %}
-    activeTab: 'rooms',
-    checkIn: '',
-    checkOut: '',
-    guests: 2,
-    checkAvailability() {
-        if (this.checkIn && this.checkOut) {
-            this.showToast('Searching availability for ' + this.guests + ' guest(s)... ✨');
-        } else {
-            this.showToast('Please select check-in and check-out dates.');
-        }
-    },
-{% endset %}
+import { renderLayout, type PageContext } from '../lib/layout';
+import { escapeHtml, jsonAttr } from '../lib/html';
+import type { Room } from '../data/rooms';
 
-{% set structuredDataObj = {
-    "@context": "https://schema.org",
-    "@type": "Resort",
-    "name": "Aurelia Hotel & Resort",
-    "description": description,
-    "url": siteUrl + "/",
-    "telephone": "+1-305-555-0134",
-    "email": "reservations@aurelia-hotel.com",
-    "image": siteUrl + "/images/apple-touch-icon.png",
-    "priceRange": "$189-$899",
-    "starRating": { "@type": "Rating", "ratingValue": "4.9" }
-} %}
-{% block structuredData %}
-    <script type="application/ld+json">{{ structuredDataObj | dump | safe }}</script>
-{% endblock %}
+// Was src/pages/index.njk
 
-{% block main %}
+export function renderIndex(ctx: PageContext): string {
+    const featuredRooms = ctx.featuredRooms ?? [];
+
+    const featuredRoomsHtml = featuredRooms.map((room: Room) => `
+                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-2xl">${escapeHtml(room.img)}</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white">${escapeHtml(room.name)}</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Sleeps ${escapeHtml(room.capacity)} guests</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-black text-amber-600 dark:text-amber-400">$${escapeHtml(room.price)}</div>
+                                <div class="text-xs text-slate-400">per night</div>
+                            </div>
+                        </div>`).join('');
+
+    const main = `
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
@@ -161,22 +150,7 @@
                 <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
 
                     <!-- Tab 1: Featured Rooms -->
-                    <div x-show="activeTab === 'rooms'" class="space-y-4">
-                        {% for room in featuredRooms %}
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-14 h-14 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-2xl">{{ room.img }}</div>
-                                <div>
-                                    <h3 class="font-bold text-slate-900 dark:text-white">{{ room.name }}</h3>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">Sleeps {{ room.capacity }} guests</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-lg font-black text-amber-600 dark:text-amber-400">${{ room.price }}</div>
-                                <div class="text-xs text-slate-400">per night</div>
-                            </div>
-                        </div>
-                        {% endfor %}
+                    <div x-show="activeTab === 'rooms'" class="space-y-4">${featuredRoomsHtml}
                         <a href="rooms.html" class="block text-center text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline pt-2">View all rooms &amp; suites →</a>
                     </div>
 
@@ -255,5 +229,33 @@
                 <a href="services.html" class="inline-block mt-8 text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline">Read more guest stories →</a>
             </div>
         </section>
-    </main>
-{% endblock %}
+    </main>`;
+
+    const extraState = `
+    activeTab: 'rooms',
+    checkIn: '',
+    checkOut: '',
+    guests: 2,
+    checkAvailability() {
+        if (this.checkIn && this.checkOut) {
+            this.showToast('Searching availability for ' + this.guests + ' guest(s)... ✨');
+        } else {
+            this.showToast('Please select check-in and check-out dates.');
+        }
+    },
+`;
+
+    // JSON-LD structured data. Plain JSON.stringify does not escape `<`, so a
+    // future edit to any string field (e.g. description) that happens to
+    // contain the literal substring `</script>` could prematurely close this
+    // script tag — use jsonAttr (not bare JSON.stringify) since it's safe for
+    // script-tag content too, not just attributes.
+    const structuredData = ctx.structuredData
+        ? `<script type="application/ld+json">${jsonAttr(ctx.structuredData)}</script>`
+        : '';
+
+    return renderLayout(
+        { ...ctx, extraState },
+        { main, structuredData },
+    );
+}

@@ -1,3 +1,17 @@
+import type { PageContext } from '../lib/layout';
+import { escapeHtml } from '../lib/html';
+
+// Was src/_partials/footer.njk
+
+export function renderFooter(ctx: PageContext): string {
+    const privacyClass = ctx.activeNav === 'privacy'
+        ? 'font-semibold text-amber-600 dark:text-amber-400'
+        : 'hover:text-amber-500 dark:hover:text-amber-400';
+    const termsClass = ctx.activeNav === 'terms'
+        ? 'font-semibold text-amber-600 dark:text-amber-400'
+        : 'hover:text-amber-500 dark:hover:text-amber-400';
+
+    return `
     <!-- Detailed & User-Friendly Footer -->
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
@@ -66,10 +80,10 @@
                     </p>
                     <form action="https://formspree.io/f/PLACEHOLDER_FORM_ID" method="POST" class="space-y-2">
                         <!-- TODO: replace PLACEHOLDER_FORM_ID with the real Formspree form ID once created -->
-                        <label for="newsletter-email-{{ slug }}" class="sr-only">Email address</label>
+                        <label for="newsletter-email-${escapeHtml(ctx.slug)}" class="sr-only">Email address</label>
                         <div class="relative">
                             <input type="email"
-                                   id="newsletter-email-{{ slug }}"
+                                   id="newsletter-email-${escapeHtml(ctx.slug)}"
                                    name="email"
                                    placeholder="Enter your email"
                                    required
@@ -91,8 +105,8 @@
                 </div>
 
                 <div class="flex items-center space-x-6">
-                    <a href="privacy.html" class="transition {{ 'font-semibold text-amber-600 dark:text-amber-400' if activeNav == 'privacy' else 'hover:text-amber-500 dark:hover:text-amber-400' }}">Privacy Policy</a>
-                    <a href="terms.html" class="transition {{ 'font-semibold text-amber-600 dark:text-amber-400' if activeNav == 'terms' else 'hover:text-amber-500 dark:hover:text-amber-400' }}">Terms of Service</a>
+                    <a href="privacy.html" class="transition ${privacyClass}">Privacy Policy</a>
+                    <a href="terms.html" class="transition ${termsClass}">Terms of Service</a>
 
                     <!-- Back to Top Button -->
                     <button type="button" @click="window.scrollTo({top: 0, behavior: 'smooth'})"
@@ -105,4 +119,5 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>`;
+}

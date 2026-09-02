@@ -1,9 +1,9 @@
-{% extends "base.njk" %}
-{% set title = "Terms of Service - Aurelia Hotel & Resort" %}
-{% set description = "The terms governing reservations, payment, cancellations, and guest conduct at Aurelia Hotel & Resort." %}
-{% set activeNav = "terms" %}
+import { renderLayout, type PageContext } from '../lib/layout';
 
-{% block main %}
+// Was src/pages/terms.njk
+
+export function renderTerms(ctx: PageContext): string {
+    const main = `
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
@@ -65,5 +65,7 @@
                 </div>
             </div>
         </section>
-    </main>
-{% endblock %}
+    </main>`;
+
+    return renderLayout(ctx, { main });
+}

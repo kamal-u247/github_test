@@ -1,9 +1,9 @@
-{% extends "base.njk" %}
-{% set title = "Privacy Policy - Aurelia Hotel & Resort" %}
-{% set description = "How Aurelia Hotel & Resort collects, uses, and protects guest information, including your rights under GDPR and CCPA." %}
-{% set activeNav = "privacy" %}
+import { renderLayout, type PageContext } from '../lib/layout';
 
-{% block main %}
+// Was src/pages/privacy.njk
+
+export function renderPrivacy(ctx: PageContext): string {
+    const main = `
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
@@ -42,7 +42,7 @@
                     <div>
                         <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3">3. Cookies &amp; Storage</h2>
                         <p>
-                            Our website uses standard HTML5 LocalStorage to remember preferences like Dark Mode (`darkMode`). We do not use intrusive tracking cookies or sell guest data to third parties.
+                            Our website uses standard HTML5 LocalStorage to remember preferences like Dark Mode (\`darkMode\`). We do not use intrusive tracking cookies or sell guest data to third parties.
                         </p>
                     </div>
 
@@ -67,5 +67,7 @@
                 </div>
             </div>
         </section>
-    </main>
-{% endblock %}
+    </main>`;
+
+    return renderLayout(ctx, { main });
+}

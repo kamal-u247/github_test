@@ -1,19 +1,9 @@
-{% extends "base.njk" %}
-{% set title = "Contact & Reservations - Aurelia Hotel & Resort" %}
-{% set description = "Get in touch with the Aurelia Hotel & Resort reservations team — email, phone, location, and directions, or send us a message directly." %}
-{% set activeNav = "contact" %}
-{% set modalBody = "Need a custom package or group rate? Reach out directly via the form or email us." %}
-{% set extraState %}
-    form: {
-        name: '',
-        email: '',
-        subject: 'General Inquiry',
-        message: '',
-        submitted: false
-    },
-{% endset %}
+import { renderLayout, type PageContext } from '../lib/layout';
 
-{% block main %}
+// Was src/pages/contact.njk
+
+export function renderContact(ctx: PageContext): string {
+    const main = `
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
@@ -103,6 +93,7 @@
                             <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Send a Message</h3>
 
                             <!-- TODO: replace PLACEHOLDER_FORM_ID with the real Formspree form ID once created -->
+                            <!-- TODO: submitContactForm is undefined — pre-existing bug, out of scope for this port -->
                             <form action="https://formspree.io/f/PLACEHOLDER_FORM_ID" method="POST" @submit.prevent="submitContactForm()" class="space-y-6">
                                 <div class="grid md:grid-cols-2 gap-6">
                                     <!-- Full Name -->
@@ -205,5 +196,24 @@
                 </div>
             </div>
         </section>
-    </main>
-{% endblock %}
+    </main>`;
+
+    // Pre-existing bug, ported as-is: submitContactForm() is called by the
+    // form's @submit.prevent but is not defined anywhere (not in rootData.ts,
+    // not here) — this throws a ReferenceError in the browser today. Not
+    // fixed here; see the TODO comment at the form tag above.
+    const extraState = `
+    form: {
+        name: '',
+        email: '',
+        subject: 'General Inquiry',
+        message: '',
+        submitted: false
+    },
+`;
+
+    return renderLayout(
+        { ...ctx, modalBody: 'Need a custom package or group rate? Reach out directly via the form or email us.', extraState },
+        { main },
+    );
+}

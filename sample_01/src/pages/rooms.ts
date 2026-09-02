@@ -1,17 +1,11 @@
-{% extends "base.njk" %}
-{% set title = "Rooms & Suites - Aurelia Hotel & Resort" %}
-{% set description = "Explore all 6 room categories at Aurelia Hotel & Resort, from garden-view retreats to the panoramic Presidential Penthouse." %}
-{% set activeNav = "rooms" %}
-{% set extraState %}
-    activeFilter: 'all',
-    detailRoom: null,
-    openDetail(room) {
-        this.detailRoom = room;
-    },
-    rooms: {{ rooms | jsonattr | safe }},
-{% endset %}
+import { renderLayout, type PageContext } from '../lib/layout';
+import { jsonAttr } from '../lib/html';
+import { ROOMS } from '../data/rooms';
 
-{% block main %}
+// Was src/pages/rooms.njk
+
+export function renderRooms(ctx: PageContext): string {
+    const main = `
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
@@ -202,10 +196,9 @@
                 </div>
             </div>
         </section>
-    </main>
-{% endblock %}
+    </main>`;
 
-{% block extraModals %}
+    const extraModals = `
     <!-- Room Detail Modal -->
     <div x-cloak
          x-show="detailRoom !== null"
@@ -290,5 +283,22 @@
                 </div>
             </template>
         </div>
-    </div>
-{% endblock %}
+    </div>`;
+
+    // rooms.njk's extraState block embeds a live Nunjucks expression
+    // (`{{ rooms | jsonattr | safe }}`), not literal text — actually evaluate
+    // jsonAttr(ROOMS) here rather than copying that line verbatim.
+    const extraState = `
+    activeFilter: 'all',
+    detailRoom: null,
+    openDetail(room) {
+        this.detailRoom = room;
+    },
+    rooms: ${jsonAttr(ROOMS)},
+`;
+
+    return renderLayout(
+        { ...ctx, extraState },
+        { main, extraModals },
+    );
+}

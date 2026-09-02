@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="
-{
+<html lang="en" x-data="{
     darkMode: false,
     mobileMenuOpen: false,
     modalOpen: false,
@@ -11,6 +10,7 @@
         this.toast.show = true;
         setTimeout(() => { this.toast.show = false; }, 3000);
     },
+    
     activeTab: 'rooms',
     checkIn: '',
     checkOut: '',
@@ -22,8 +22,8 @@
             this.showToast('Please select check-in and check-out dates.');
         }
     },
-}
-" :class="{ 'dark': darkMode }">
+
+}" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,6 +52,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
 
+    <script type="application/ld+json">{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;Resort&quot;,&quot;name&quot;:&quot;Aurelia Hotel &amp; Resort&quot;,&quot;description&quot;:&quot;A refined oceanfront retreat offering elegant rooms, world-class amenities, and warm, attentive hospitality. Discover your oceanfront escape at Aurelia Hotel &amp; Resort.&quot;,&quot;url&quot;:&quot;https://www.aurelia-hotel.com/&quot;,&quot;telephone&quot;:&quot;+1-305-555-0134&quot;,&quot;email&quot;:&quot;reservations@aurelia-hotel.com&quot;,&quot;image&quot;:&quot;https://www.aurelia-hotel.com/images/apple-touch-icon.png&quot;,&quot;priceRange&quot;:&quot;$189-$899&quot;,&quot;starRating&quot;:{&quot;@type&quot;:&quot;Rating&quot;,&quot;ratingValue&quot;:&quot;4.9&quot;}}</script>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -81,6 +82,7 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
 
+
     <!-- Toast Notification -->
     <div x-cloak
          x-show="toast.show"
@@ -98,6 +100,7 @@
         </svg>
         <span x-text="toast.message"></span>
     </div>
+
     <!-- Utility Bar -->
     <div class="hidden sm:block bg-slate-900 dark:bg-black text-slate-300 text-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between">
@@ -197,6 +200,7 @@
             </button>
         </div>
     </nav>
+
 
     <!-- Main Content -->
     <main class="flex-grow">
@@ -445,6 +449,8 @@
         </section>
     </main>
 
+
+
     <!-- Reservation Modal Component -->
     <div x-cloak
          x-show="modalOpen"
@@ -494,6 +500,7 @@
             </div>
         </div>
     </div>
+
     <!-- Detailed & User-Friendly Footer -->
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">

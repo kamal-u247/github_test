@@ -1,3 +1,7 @@
+// Was src/_partials/toast.njk
+
+export function renderToast(): string {
+    return `
     <!-- Toast Notification -->
     <div x-cloak
          x-show="toast.show"
@@ -14,4 +18,5 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
         </svg>
         <span x-text="toast.message"></span>
-    </div>
+    </div>`;
+}

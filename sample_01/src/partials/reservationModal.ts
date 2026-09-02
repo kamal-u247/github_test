@@ -1,3 +1,16 @@
+import type { PageContext } from '../lib/layout';
+import { escapeHtml, withDefault } from '../lib/html';
+
+// Was src/_partials/reservation-modal.njk
+
+export function renderReservationModal(ctx: PageContext): string {
+    const modalBody = withDefault(
+        ctx.modalBody,
+        'Enter your name and our reservations team will follow up to confirm your dates and room preference.',
+    );
+    const slug = escapeHtml(ctx.slug);
+
+    return `
     <!-- Reservation Modal Component -->
     <div x-cloak
          x-show="modalOpen"
@@ -33,11 +46,11 @@
                 </button>
             </div>
             <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">
-                {{ modalBody | default("Enter your name and our reservations team will follow up to confirm your dates and room preference.") }}
+                ${escapeHtml(modalBody)}
             </p>
             <div class="space-y-3">
-                <label for="reserve-name-{{ slug }}" class="sr-only">Your full name</label>
-                <input type="text" id="reserve-name-{{ slug }}" x-model="reserveName" placeholder="Your full name" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm">
+                <label for="reserve-name-${slug}" class="sr-only">Your full name</label>
+                <input type="text" id="reserve-name-${slug}" x-model="reserveName" placeholder="Your full name" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm">
                 <button type="button" @click="modalOpen = false; showToast((reserveName ? reserveName + ', your' : 'Your') + ' request was received! Our team will be in touch. 🏨')" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-medium transition">
                     Confirm &amp; Request Booking
                 </button>
@@ -46,4 +59,5 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div>`;
+}

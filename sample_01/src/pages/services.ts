@@ -1,13 +1,9 @@
-{% extends "base.njk" %}
-{% set title = "Amenities & Rates - Aurelia Hotel & Resort" %}
-{% set description = "Explore Aurelia's amenities — infinity pool, full-service spa, signature restaurants, and more — plus nightly room rates for standard and peak season." %}
-{% set activeNav = "services" %}
-{% set modalBody = "Choose a room type or request a custom package for your trip." %}
-{% set extraState %}
-    seasonRate: 'standard',
-{% endset %}
+import { renderLayout, type PageContext } from '../lib/layout';
 
-{% block main %}
+// Was src/pages/services.njk
+
+export function renderServices(ctx: PageContext): string {
+    const main = `
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
@@ -254,5 +250,14 @@
                 </div>
             </div>
         </section>
-    </main>
-{% endblock %}
+    </main>`;
+
+    const extraState = `
+    seasonRate: 'standard',
+`;
+
+    return renderLayout(
+        { ...ctx, modalBody: 'Choose a room type or request a custom package for your trip.', extraState },
+        { main },
+    );
+}

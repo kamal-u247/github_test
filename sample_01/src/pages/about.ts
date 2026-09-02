@@ -1,10 +1,9 @@
-{% extends "base.njk" %}
-{% set title = "About Us - Aurelia Hotel & Resort" %}
-{% set description = "Learn the story behind Aurelia Hotel & Resort, meet our leadership team, and discover the values that shape every guest experience." %}
-{% set activeNav = "about" %}
-{% set modalBody = "Enter your name and our reservations team will follow up to confirm your dates and room preference." %}
+import { renderLayout, type PageContext } from '../lib/layout';
 
-{% block main %}
+// Was src/pages/about.njk
+
+export function renderAbout(ctx: PageContext): string {
+    const main = `
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
@@ -170,5 +169,7 @@
                 </div>
             </div>
         </section>
-    </main>
-{% endblock %}
+    </main>`;
+
+    return renderLayout(ctx, { main });
+}
