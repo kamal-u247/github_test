@@ -6,6 +6,7 @@ export interface Room {
     tagline: string;
     category: string;
     img: string;
+    imageUrl: string;
     gradient: string;
     price: number;
     peakPrice: number;
@@ -26,6 +27,7 @@ export const ROOMS: Room[] = [
         tagline: 'Ideal for couples & solo travelers',
         category: 'standard',
         img: '🌿',
+        imageUrl: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80',
         gradient: 'from-emerald-400 to-teal-600',
         price: 189,
         peakPrice: 219,
@@ -44,6 +46,7 @@ export const ROOMS: Room[] = [
         tagline: 'Great for families & extended stays',
         category: 'suite',
         img: '🛎️',
+        imageUrl: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
         gradient: 'from-amber-400 to-orange-600',
         price: 289,
         peakPrice: 339,
@@ -62,6 +65,7 @@ export const ROOMS: Room[] = [
         tagline: 'For a truly indulgent escape',
         category: 'suite',
         img: '🌊',
+        imageUrl: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80',
         gradient: 'from-sky-400 to-blue-600',
         price: 379,
         peakPrice: 449,
@@ -80,6 +84,7 @@ export const ROOMS: Room[] = [
         tagline: 'Space and comfort for the whole family',
         category: 'family',
         img: '🏖️',
+        imageUrl: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80',
         gradient: 'from-cyan-400 to-sky-600',
         price: 259,
         peakPrice: 299,
@@ -98,6 +103,7 @@ export const ROOMS: Room[] = [
         tagline: 'The pinnacle of the Aurelia experience',
         category: 'suite',
         img: '👑',
+        imageUrl: 'https://images.unsplash.com/photo-1611048267451-e6ed903d4a38?auto=format&fit=crop&w=800&q=80',
         gradient: 'from-purple-400 to-indigo-600',
         price: 749,
         peakPrice: 899,
@@ -116,6 +122,7 @@ export const ROOMS: Room[] = [
         tagline: 'Thoughtfully designed for every guest',
         category: 'standard',
         img: '♿',
+        imageUrl: 'https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=800&q=80',
         gradient: 'from-lime-400 to-emerald-600',
         price: 189,
         peakPrice: 219,

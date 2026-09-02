@@ -9,7 +9,9 @@ export function renderRooms(ctx: PageContext): string {
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
-        <section class="relative overflow-hidden py-16 lg:py-24 bg-gradient-to-b from-amber-50/50 to-transparent dark:from-slate-800/40 dark:to-transparent border-b border-slate-200/60 dark:border-slate-800">
+        <section class="relative overflow-hidden py-16 lg:py-24 border-b border-slate-200/60 dark:border-slate-800">
+            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1600&q=80" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute inset-0 bg-white/85 dark:bg-slate-900/85"></div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                 <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-semibold tracking-wide uppercase mb-4">
                     <span>🛏️ Rooms &amp; Suites</span>
@@ -41,9 +43,6 @@ export function renderRooms(ctx: PageContext): string {
                     </div>
                 </div>
             </div>
-
-            <!-- Background Glow -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-amber-500/10 to-sky-500/10 blur-3xl pointer-events-none rounded-full"></div>
         </section>
 
         <!-- Filter Bar (not sticky — scrolls away normally with the page) -->
@@ -78,9 +77,10 @@ export function renderRooms(ctx: PageContext): string {
                             <div x-show="room.popular" class="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-amber-500 text-white font-extrabold text-[10px] tracking-wider uppercase shadow-md">
                                 Most Popular
                             </div>
-                            <!-- Image / Icon Banner -->
-                            <div class="h-44 flex items-center justify-center text-6xl bg-gradient-to-tr group-hover:scale-105 transition-transform duration-300" :class="room.gradient">
-                                <span x-text="room.img"></span>
+                            <!-- Photo Banner -->
+                            <div class="h-44 relative overflow-hidden bg-gradient-to-tr" :class="room.gradient">
+                                <img :src="room.imageUrl" :alt="room.name" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <span class="absolute bottom-3 left-3 w-9 h-9 rounded-full bg-white/90 dark:bg-slate-900/80 flex items-center justify-center text-lg shadow-md" x-text="room.img"></span>
                             </div>
                             <div class="p-6 flex flex-col flex-grow">
                                 <h3 class="text-lg font-bold text-slate-900 dark:text-white" x-text="room.name"></h3>
@@ -227,9 +227,10 @@ export function renderRooms(ctx: PageContext): string {
              class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 dark:border-slate-700 z-10 overflow-hidden max-h-[90vh] flex flex-col">
             <template x-if="detailRoom">
                 <div class="overflow-y-auto">
-                    <div class="h-40 flex items-center justify-center text-7xl bg-gradient-to-tr relative" :class="detailRoom.gradient">
-                        <span x-text="detailRoom.img"></span>
-                        <button type="button" @click="detailRoom = null" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-black/20 hover:bg-black/30 text-white transition" aria-label="Close dialog">
+                    <div class="h-48 relative overflow-hidden bg-gradient-to-tr" :class="detailRoom.gradient">
+                        <img :src="detailRoom.imageUrl" :alt="detailRoom.name" class="absolute inset-0 w-full h-full object-cover">
+                        <span class="absolute bottom-4 left-4 w-11 h-11 rounded-full bg-white/90 dark:bg-slate-900/80 flex items-center justify-center text-2xl shadow-md" x-text="detailRoom.img"></span>
+                        <button type="button" @click="detailRoom = null" class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/40 text-white transition" aria-label="Close dialog">
                             ✕
                         </button>
                     </div>

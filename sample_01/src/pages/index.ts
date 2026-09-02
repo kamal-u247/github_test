@@ -26,18 +26,20 @@ export function renderIndex(ctx: PageContext): string {
     <!-- Main Content -->
     <main class="flex-grow">
         <!-- Hero Section -->
-        <section class="relative overflow-hidden py-20 lg:py-28">
+        <section class="relative overflow-hidden py-24 lg:py-36">
+            <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=2000&q=80" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/60 to-slate-900/80"></div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-semibold tracking-wide uppercase mb-6">
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-amber-100/95 dark:bg-amber-950/70 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-semibold tracking-wide uppercase mb-6">
                     <span>✨ Welcome to Aurelia Hotel &amp; Resort</span>
                 </div>
                 <div class="flex justify-center mb-6">
-                    <img src="images/logo.svg" alt="Aurelia Hotel & Resort" width="96" height="96" class="w-24 h-24 hover:scale-105 transition-transform duration-300">
+                    <img src="images/logo.svg" alt="Aurelia Hotel & Resort" width="96" height="96" class="w-24 h-24 hover:scale-105 transition-transform duration-300 drop-shadow-lg">
                 </div>
-                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-4xl mx-auto leading-tight">
-                    Your Oceanfront <span class="text-amber-500">Escape Awaits</span>
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight drop-shadow-sm">
+                    Your Oceanfront <span class="text-amber-400">Escape Awaits</span>
                 </h1>
-                <p class="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                <p class="mt-6 text-lg sm:text-xl text-slate-100 max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
                     Indulge in refined comfort, panoramic ocean views, and effortless hospitality. Discover a stay designed around you.
                 </p>
                 <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -45,14 +47,11 @@ export function renderIndex(ctx: PageContext): string {
                         <span>Reserve Your Stay</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </button>
-                    <a href="rooms.html" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition flex items-center justify-center">
+                    <a href="rooms.html" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-800 bg-white/95 hover:bg-white transition flex items-center justify-center">
                         Explore Rooms
                     </a>
                 </div>
             </div>
-
-            <!-- Background Glow -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-tr from-amber-500/10 to-sky-500/10 blur-3xl pointer-events-none rounded-full"></div>
         </section>
 
         <!-- Trust / Stats Strip -->
@@ -197,14 +196,30 @@ export function renderIndex(ctx: PageContext): string {
                     <p class="mt-2 text-slate-600 dark:text-slate-400">A few favorite moments from around the resort.</p>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="aspect-square rounded-2xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-5xl shadow-md hover:scale-[1.03] transition-transform">🌅</div>
-                    <div class="aspect-square rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-5xl shadow-md hover:scale-[1.03] transition-transform">🍹</div>
-                    <div class="aspect-square rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-5xl shadow-md hover:scale-[1.03] transition-transform">🏊</div>
-                    <div class="aspect-square rounded-2xl bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-5xl shadow-md hover:scale-[1.03] transition-transform">🛎️</div>
-                    <div class="aspect-square rounded-2xl bg-gradient-to-br from-rose-400 to-pink-600 flex items-center justify-center text-5xl shadow-md hover:scale-[1.03] transition-transform hidden md:flex">💐</div>
-                    <div class="aspect-square rounded-2xl bg-gradient-to-br from-cyan-400 to-sky-600 flex items-center justify-center text-5xl shadow-md hover:scale-[1.03] transition-transform hidden md:flex">🐚</div>
-                    <div class="aspect-square rounded-2xl bg-gradient-to-br from-lime-400 to-green-600 flex items-center justify-center text-5xl shadow-md hover:scale-[1.03] transition-transform hidden md:flex">🌴</div>
-                    <div class="aspect-square rounded-2xl bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center text-5xl shadow-md hover:scale-[1.03] transition-transform hidden md:flex">🍽️</div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=600&q=80" alt="Sunrise over the ocean from the resort terrace" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group">
+                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=600&q=80" alt="Signature cocktail served at the resort bar" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group">
+                        <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=600&q=80" alt="Resort swimming pool surrounded by loungers" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group">
+                        <img src="https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=600&q=80" alt="Hotel lobby and concierge desk" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&q=80" alt="Tropical flowers in the resort garden" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?auto=format&fit=crop&w=600&q=80" alt="Seashells on the resort's private beach" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=600&q=80" alt="Palm trees lining the resort grounds" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-md relative group hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=80" alt="Fine dining table setting at the resort restaurant" loading="lazy" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-300">
+                    </div>
                 </div>
                 <div class="text-center mt-8">
                     <a href="services.html" class="text-sm font-semibold text-amber-600 dark:text-amber-400 hover:underline">Explore all amenities →</a>
