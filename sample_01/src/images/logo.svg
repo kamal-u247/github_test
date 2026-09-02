@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" role="img" aria-labelledby="aureliaLogoTitle">
+  <title id="aureliaLogoTitle">Aurelia Hotel &amp; Resort</title>
+  <rect width="40" height="40" rx="11" fill="url(#aureliaLogoGradient)"/>
+  <path d="M9 24c2.2 2.6 4.6 2.6 6.8 0 2.2-2.6 4.6-2.6 6.8 0 2.2 2.6 4.6 2.6 6.8 0" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  <path d="M9 17.5c2.2 2.6 4.6 2.6 6.8 0 2.2-2.6 4.6-2.6 6.8 0 2.2 2.6 4.6 2.6 6.8 0" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none" opacity="0.55"/>
+  <defs>
+    <linearGradient id="aureliaLogoGradient" x1="0" y1="0" x2="40" y2="40">
+      <stop stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#b45309"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{% include 'root-data.njk' %}" :class="{ 'dark': darkMode }">
+{% include 'head.njk' %}
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col font-sans">
+
+{% include 'toast.njk' %}
+{% include 'header.njk' %}
+
+{% block main %}{% endblock %}
+
+{% block extraModals %}{% endblock %}
+{% include 'reservation-modal.njk' %}
+{% include 'footer.njk' %}
+
+</body>
+</html>

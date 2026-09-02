@@ -1,0 +1,16 @@
+{
+  "name": "aurelia-hotel-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aurelia Hotel & Resort — static site build (Nunjucks templates compiled to plain HTML).",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js --watch"
+  },
+  "dependencies": {
+    "nunjucks": "^3.2.4"
+  },
+  "devDependencies": {
+    "chokidar": "^3.6.0"
+  }
+}
