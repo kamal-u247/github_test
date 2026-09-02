@@ -4,7 +4,7 @@
  *
  * Renders each page function in src/pages/ (composed from shared partials in
  * src/partials/ and shared data in src/data/) into plain static HTML files
- * at the repo root (sample_01/), and copies images/ alongside them.
+ * at the repo root (hotel_website/), and copies images/ alongside them.
  *
  * Usage:
  *   node dist/build.js          one-off build
@@ -29,8 +29,8 @@ import { renderPrivacy } from './src/pages/privacy';
 
 // With rootDir: ".", this file compiles to dist/build.js while everything
 // under src/ compiles to dist/src/... — so __dirname here resolves to
-// sample_01/dist, not sample_01. Go one level up so generated output
-// (*.html, sitemap.xml, images/) still lands at the sample_01/ repo root.
+// hotel_website/dist, not hotel_website. Go one level up so generated output
+// (*.html, sitemap.xml, images/) still lands at the hotel_website/ repo root.
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(ROOT, 'src');
 const SRC_IMAGES_DIR = path.join(SRC, 'images');
